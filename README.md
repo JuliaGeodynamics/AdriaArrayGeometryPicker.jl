@@ -1,16 +1,13 @@
-# AdriaArrayPicker.jl
 
 <h1> <img src="./assets/AdA_Picker_logo.png" alt="AdriaArrayPicker.jl" width="50"> AdriaArrayPicker.jl </h1>
 
 <p align="center"><img src="./assets/AdA_Picker_logo_tr.png" alt="AdriaArrayPicker.jl" width="400"></p>
 
-The AdA Picker is a graphical user interface (GUI) designed to facilitate the visualization and comparison of geophysical datasets. The name stems from the [*AdriaArray*](https://orfeus.readthedocs.io/en/latest/adria_array_main.html) initiative, which focuses on the Adria region. 
+The **Ad**ria**A**rray Picker is a graphical user interface (GUI) designed to facilitate the visualization and comparison of geophysical datasets. The name stems from the [*AdriaArray*](https://orfeus.readthedocs.io/en/latest/adria_array_main.html) initiative, which focuses on invesitgating the Adria region with seismological methods.
 
 The AdA Picker employs [GLMakie](https://docs.makie.org/stable/explanations/backends/glmakie.html) for high-performance graphics rendering. It builds on [GeophysicalModelGenerator.jl](https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl) for data handling. To use the AdA Picker, it is therefore necessary to be familiar with GeophysicalModelGenerator.jl.
 
 ### Contents
-- [AdriaArray Picker](#adriaarraypicker.jl)
-  - [Contents](#contents)
   - [Main features](#main-features)
   - [System requirements](#system-requirements)
   - [Dependencies](#dependencies)
@@ -22,8 +19,8 @@ The AdA Picker employs [GLMakie](https://docs.makie.org/stable/explanations/back
 
 ### Main features
 Some of the key features of the AdA Picker are:
-    - compare different geophysical datasets (e.g. seismic tomographies, Moho topographies, seismicity etc.) that have been projected on vertical profiles
-    - manually pick locations in these profiles 
+  - compare different geophysical datasets (e.g. seismic tomographies, Moho topographies, seismicity etc.) that have been projected on vertical profiles
+  - manually pick locations in these profiles and save these picks.
 
 More features are still in development.
 
@@ -32,8 +29,10 @@ This package heavily relies on GLMakie, therefore it requires an OpenGL enabled 
 
 ### Dependencies
 AdriaArrayPicker relies on several other packages, which are all installed automatically. The most notable ones are:
-- [GLMakie.jl]()
-- [GeophysicalModelGenerator.jl]()
+- [Makie.jl](https://github.com/MakieOrg/Makie.jl), in particular [GLMakie](https://docs.makie.org/stable/explanations/backends/glmakie.html)
+- [GeophysicalModelGenerator.jl](https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl)
+
+If you are opting to use the AdriaArrayPicker, we strongly recommend to have a look at the GeophysicalModelGenerator first.
 
 ### Installation
 As a first step, you need to install *julia*. See the installation instructions [here](https://julialang.org/install/). Next, start julia and switch to the julia package manager using `]`, after which you can add the package.
