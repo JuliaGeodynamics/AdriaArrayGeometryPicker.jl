@@ -36,9 +36,11 @@ If you are opting to use the AdriaArrayPicker, we strongly recommend to have a l
 
 ### Installation
 As a first step, you need to install *julia*. See the installation instructions [here](https://julialang.org/install/). Next, start julia and switch to the julia package manager using `]`, after which you can add the package.
+
+As for now, the package is not registered in the Julia General Registry. This means that to add the package, on has to type the following:
 ```julia-repl
 julia> ]
-(@v1.11) pkg> add AdriaArrayPicker
+(@v1.11) pkg> add https://github.com/JuliaGeodynamics/AdriaArrayPicker.jl
 ```
 
 This will install the package and all its dependencies.
