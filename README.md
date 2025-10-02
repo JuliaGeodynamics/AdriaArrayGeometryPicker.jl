@@ -54,7 +54,7 @@ To start the GUI, enter
 ```julia-repl
 julia> start_AdA_Picker()
 ```
-This will open the GUI. You can find the manual of this GUI [here](). 
+This will open the GUI. You can find the manual of this GUI [here]() (work in progress). 
 
 ### Troubleshooting
 If you encounter any issues, don't hesitate to hesitate to open an issue or to as a question in the forum. 
