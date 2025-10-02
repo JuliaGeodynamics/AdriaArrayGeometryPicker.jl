@@ -3,8 +3,24 @@ uuid = "10cbbe04-4d51-483e-8de5-7c05df3150f1"
 authors = ["Marcel Thielmann"]
 version = "1.0.0-DEV"
 
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+GeophysicalModelGenerator = "3700c31b-fa53-48a6-808a-ef22d5a84742"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+NativeFileDialog = "e1fe445b-aa65-4df4-81c1-2041507f0fd4"
+
 [compat]
-julia = "1.6.7"
+Dates = "1.11.0"
+DelimitedFiles = "1.9.1"
+FileIO = "1.17.0"
+GLMakie = "0.8 - 0.11, 0.13"
+GeophysicalModelGenerator = "0.7.14"
+JLD2 = "0.5.15"
+NativeFileDialog = "0.2.1"
+julia = "1.9"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
