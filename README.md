@@ -1,7 +1,7 @@
 
-<h1> <img src="./assets/AdA_Picker_logo.png" alt="AdriaArrayPicker.jl" width="50"> AdriaArrayPicker.jl </h1>
+<h2> <img src="./assets/AdA_GeometryPicker_logo.png" alt="AdriaArrayGeometryPicker.jl" width="50"> AdriaArrayGeometryPicker.jl </h2>
 
-<p align="center"><img src="./assets/AdA_Picker_logo_tr.png" alt="AdriaArrayPicker.jl" width="400"></p>
+<p align="center"><img src="./assets/AdA_GeometryPicker_logo_tr.png" alt="AdriaArrayGeometryPicker.jl" width="600"></p>
 
 The **Ad**ria**A**rray Picker is a graphical user interface (GUI) designed to facilitate the visualization and comparison of geophysical datasets. The name stems from the [*AdriaArray*](https://orfeus.readthedocs.io/en/latest/adria_array_main.html) initiative, which focuses on invesitgating the Adria region with seismological methods.
 
