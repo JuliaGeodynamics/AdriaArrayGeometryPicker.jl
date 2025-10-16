@@ -3,9 +3,9 @@
 
 <p align="center"><img src="./assets/AdA_GeometryPicker_logo_tr.png" alt="AdriaArrayGeometryPicker.jl" width="600"></p>
 
-The **Ad**ria**A**rray Picker is a graphical user interface (GUI) designed to facilitate the visualization and comparison of geophysical datasets. The name stems from the [*AdriaArray*](https://orfeus.readthedocs.io/en/latest/adria_array_main.html) initiative, which focuses on invesitgating the Adria region with seismological methods.
+The AdriaArray Geometry Picker is a graphical user interface (GUI) designed to facilitate the visualization and comparison of geophysical datasets. The name stems from the [*AdriaArray*](https://orfeus.readthedocs.io/en/latest/adria_array_main.html) initiative, which focuses on investigating the Adria region with seismological methods.
 
-The AdA Picker employs [GLMakie](https://docs.makie.org/stable/explanations/backends/glmakie.html) for high-performance graphics rendering. It builds on [GeophysicalModelGenerator.jl](https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl) for data handling. To use the AdA Picker, it is therefore necessary to be familiar with GeophysicalModelGenerator.jl.
+The AdriaArray Geometry  Picker employs [GLMakie](https://docs.makie.org/stable/explanations/backends/glmakie.html) for high-performance graphics rendering. It builds on [GeophysicalModelGenerator.jl](https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl) for data handling. To use the AdA Picker, it is therefore necessary to be familiar with GeophysicalModelGenerator.jl.
 
 ### Contents
   - [Main features](#main-features)
