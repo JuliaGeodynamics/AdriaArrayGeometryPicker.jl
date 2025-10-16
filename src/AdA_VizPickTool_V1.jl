@@ -63,7 +63,7 @@ function start_AdA_Picker(;data=nothing)
     compare_toggle = Toggle(panel_pick_compare[1,2],active=false,buttoncolor = RGBf(0.9, 0.9, 0.9), framecolor_inactive = RGBf(0.5, 0.1, 0.1), framecolor_active = RGBf(0.1, 0.5, 0.1))
 
     ### LOGO ###
-    insert_logo!(panel_logo[1,1])
+    #insert_logo!(panel_logo[1,1])
     # logo_img = load("./assets/AdA_Picker_logo_tr.png") # load the logo
     # logo_axis = Axis(panel_logo[1,1], aspect = DataAspect())
     # image!(logo_axis, rotr90(logo_img))
