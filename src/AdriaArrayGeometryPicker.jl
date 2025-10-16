@@ -1,4 +1,4 @@
-module AdriaArrayPicker
+module AdriaArrayGeometryPicker
 
 # load required packages
 using GLMakie
