@@ -40,7 +40,7 @@ As a first step, you need to install *julia*. See the installation instructions 
 As for now, the package is not yet registered in the Julia General Registry. This means that to add the package, one has to type the following:
 ```julia-repl
 julia> ]
-(@v1.11) pkg> add https://github.com/JuliaGeodynamics/AdriaArrayPicker.jl
+(@v1.11) pkg> add https://github.com/JuliaGeodynamics/AdriaArrayGeometryPicker.jl
 ```
 
 This will install the package and all its dependencies (which may take a while).
@@ -48,7 +48,7 @@ This will install the package and all its dependencies (which may take a while).
 ### Usage
 When the installation is done, the package can be used with:
 ```julia-repl
-julia> using AdriaArrayPicker
+julia> using AdriaArrayGeometryPicker
 ```
 To start the GUI, enter 
 ```julia-repl
