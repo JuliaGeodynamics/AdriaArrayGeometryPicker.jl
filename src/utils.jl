@@ -2,7 +2,7 @@
 # it collects all the utility functions used in the GUI that do not belong to a specific category
 
 function insert_logo!(panel)
-    logo_img = load("./assets/AdA_Picker_logo_tr.png")
+    logo_img = load("./assets/AdA_GeometryPicker_logo_tr.png")
     ax_logo = Axis(panel[1,1],aspect = DataAspect())
     image!(ax_logo,rotr90(logo_img))
     #ax_logo.yreversed = true
