@@ -1,7 +1,19 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 version: 2
 updates:
+  # keep github workflows up to date
   - package-ecosystem: "github-actions"
-    directory: "/" # Location of package manifests
+    directory: "/"
     schedule:
       interval: "weekly"
+
+  # keep julia packages up to date
+  - package-ecosystem: "julia"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # if there are updates to julia packages. put them all in one pull request
+    groups:
+      julia-packages:
+        patterns:
+          - "*"
