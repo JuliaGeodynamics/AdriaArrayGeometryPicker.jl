@@ -469,16 +469,26 @@ function start_AdA_Picker(;data=nothing)
                 # save depending on file ending
                 if filetype == "jld2"
                     # file should contain: profile information, picker information, picks, lat and lon of the picked points
-                    profile_info = (start_lonlat = data.start_lonlat,end_lonlat = data.end_lonlat, start_x = minimum(point_data.fields.x_profile), end_x = maximum(point_data.fields.x_profile) ) # profile information
-
+                    profile_info = (start_lonlat = data.start_lonlat,end_lonlat = data.end_lonlat) # profile information
+                    println("profile information generated")
                     # interpolate the lat and lon from the profile end points to the picked points
-                    interp_linear_lon = linear_interpolation([minimum(point_data.fields.x_profile) maximum(point_data.fields.x_profile)], [data.start_lonlat[1] data.end_lonlat[1]])
-                    interp_linear_lat = linear_interpolation([minimum(point_data.fields.x_profile) maximum(point_data.fields.x_profile)], [data.start_lonlat[2] data.end_lonlat[2]])
+                    xtmp = [minimum(data.VolData.fields.x_profile), maximum(data.VolData.fields.x_profile)]
+                    println("xtmp generated")
+                    lontmp = [data.start_lonlat[1], data.end_lonlat[1]]
+                    println("lontmp generated")
+                    lattmp = [data.start_lonlat[2], data.end_lonlat[2]]  
+                    println("lattmp generated")
+
+                    interp_linear_lon = linear_interpolation(xtmp, lontmp)
+                    interp_linear_lat = linear_interpolation(xtmp, lattmp)
+                    println("interpolators generated")
                     lon_pick = interp_linear_lon(pickarray[:,1])
                     lat_pick = interp_linear_lat(pickarray[:,1])
+                    println("lon and lat generated")
 
                     # add lon and lat to the pickarray
                     pickarray = hcat(pickarray,lon_pick,lat_pick)
+                    println("lon and lat added to pickarray")
 
                     # save as jld2 file
                     jldsave(fn_save; picks=pickarray, profile_info=profile_info, user_name=pick_name.stored_string[], date=now())
