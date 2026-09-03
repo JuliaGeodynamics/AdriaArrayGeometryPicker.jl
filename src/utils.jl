@@ -27,3 +27,13 @@
 #     return nothing
 # end
 
+# # function to clear a GridLayout unit (I call it panel) by recursively deleting all its children
+# function clear_panel!(panel::GridLayout)
+#     for child in panel.children
+#         if child isa GridLayout
+#             clear_panel!(child)
+#         end
+#         delete!(panel, child)
+#     end
+#     return nothing
+# end
