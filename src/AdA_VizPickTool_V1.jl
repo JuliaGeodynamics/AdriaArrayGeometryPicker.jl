@@ -10,6 +10,9 @@ include("utils.jl") # this file contains some utility functions
 include("FileIO/fileIO_utils.jl") # this file contains the functions to load and save data
 include("Controls/layout_main_controls.jl") # this file contains the layour for the main controls
 
+using Interpolations
+
+
 ###############################################################
 # main function to start the tool
 
@@ -131,21 +134,17 @@ function start_AdA_Picker(;data=nothing)
                 
                 ############################################################
                 # SET THE CONTROL PANEL
+
+                # FIELD DATA: THIS PANEL MORE OR LESS REMAINS THE SAME, ONLY SOME OF THE CONTENTS CHANGE
                 
-                # VOLUME DATA CONTROLS
+                # set up the panel, box and label
                 field_data_panel = panel_plot_controls[1, 1] = GridLayout(tellheight = false, halign = :left)
                 field_data_box   = Box(field_data_panel[1, 1:5], color = :steelblue1,strokecolor = :steelblue1, cornerradius = 3);
-                    Label(field_data_panel[1, 1:5], "Field data (Tomographies etc.)", fontsize = 16,halign = :left,width = nothing)
+                Label(field_data_panel[1, 1:5], "Field data (Tomographies etc.)", fontsize = 16,halign = :left,width = nothing)
                 
-                menu_field_data = Menu(field_data_panel[2,1:5])
-                menu_field_data.options = field_names[1:end-2] # the last one is empty, so we remove it
-
                 Label(field_data_panel[3, 1], "Colormap", fontsize = 14,halign = :left,width=nothing)
                 menu_field_colormap  = Menu(field_data_panel[3,2:5], options = [:seismic,:roma,:glasgow,:lipari,:vik,:managua,:lajolla,:inferno,:plasma,:magma,:RdBu,:RdYlBu], fontsize = 12)
-                
-                #Label(field_data_panel[4, 1], "Clim", fontsize = 12,halign = :left,width=nothing)
                 colorrange_slider = IntervalSlider(field_data_panel[4,2:4],linewidth = 20,range = colrange) 
-                
                 # text for the label of the colorbar
                 colrange_text = lift(colorrange_slider.interval) do int
                     string(round.(int,digits = 2))
@@ -159,6 +158,10 @@ function start_AdA_Picker(;data=nothing)
                 colmax_textbox = Textbox(field_data_panel[4,5],width=50)
                 
                 rowgap!(field_data_panel,2)
+
+                # set the menu for field data selection
+                menu_field_data = Menu(field_data_panel[2,1:5])
+                menu_field_data.options = field_names[1:end-2] # the last one is empty, so we remove it
 
                 # SURFACE DATA CONTROLS
                 surf_data_panel = panel_plot_controls[2, 1] = GridLayout(tellheight = false, halign = :left,tellwidth = false)
@@ -421,8 +424,8 @@ function start_AdA_Picker(;data=nothing)
                         println("Picks loaded")                        
 
                         # add these picks as a dashed line
-                        #lines!(ax1, x_pick,y_pick, color = :white,linewidth = 3,visible = @lift($(surf_toggles[isurf].active) ? true : false)) # white background line
-                        pp = lines!(ax1, x_pick,y_pick,color=:black,linewidth=3,linestyle=:dash,visible = @lift($(compare_toggle.active) ? true : false)) # black main line
+                        lines!(ax1, x_pick,y_pick, color = :white,linewidth = 3,visible = @lift($(compare_toggle.active) ? true : false)) # white background line
+                        pp = lines!(ax1, x_pick,y_pick,color=:red,linewidth=2,linestyle=(:dot,:dense),visible = @lift($(compare_toggle.active) ? true : false)) # black main line
                         #push!(comppick_plot,pp)
                         #push!(comppick_label,data_picks["user_name"])
                         
@@ -465,14 +468,25 @@ function start_AdA_Picker(;data=nothing)
                 filetype = split(fn_save,".")[end] # get the ending
                 # save depending on file ending
                 if filetype == "jld2"
-                    # file should contain: profile information, picker information, picks
-                    profile_info = (start_lonlat = data.start_lonlat,end_lonlat = data.end_lonlat)
+                    # file should contain: profile information, picker information, picks, lat and lon of the picked points
+                    profile_info = (start_lonlat = data.start_lonlat,end_lonlat = data.end_lonlat, start_x = minimum(point_data.fields.x_profile), end_x = maximum(point_data.fields.x_profile) ) # profile information
+
+                    # interpolate the lat and lon from the profile end points to the picked points
+                    interp_linear_lon = linear_interpolation([minimum(point_data.fields.x_profile) maximum(point_data.fields.x_profile)], [data.start_lonlat[1] data.end_lonlat[1]])
+                    interp_linear_lat = linear_interpolation([minimum(point_data.fields.x_profile) maximum(point_data.fields.x_profile)], [data.start_lonlat[2] data.end_lonlat[2]])
+                    lon_pick = interp_linear_lon(pickarray[:,1])
+                    lat_pick = interp_linear_lat(pickarray[:,1])
+
+                    # add lon and lat to the pickarray
+                    pickarray = hcat(pickarray,lon_pick,lat_pick)
+
+                    # save as jld2 file
                     jldsave(fn_save; picks=pickarray, profile_info=profile_info, user_name=pick_name.stored_string[], date=now())
                     println(fn_save*" saved")
                 elseif filetype == "csv"    
                     println("Saving as csv is not implemented yet")
                 else
-                    println("This is not a valid pick file format. Picks are saved as jld2 file.")
+                    println("This is not a valid pick file format. Picks should be saved as jld2 files.")
                 end 
             end
             # get the file ending
