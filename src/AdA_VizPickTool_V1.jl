@@ -453,7 +453,7 @@ function start_AdA_Picker(;data=nothing)
             # save a file with the picked data
             # picks can be stored as either jld2 file or csv file,depending on the chosen file extension
             # if no file extension is chosen, the default is a jld2 file
-            println("saving picks")
+            println("saving picks...")
 
             # create an array for the picks
             pickarray = zeros(length(picks[]),2)
@@ -461,7 +461,6 @@ function start_AdA_Picker(;data=nothing)
                 pickarray[ipick,1] = picks[][ipick][1]
                 pickarray[ipick,2] = picks[][ipick][2]
             end
-            println("reorganized picks")
             
             @async begin 
                 fn_save = fetch(Threads.@spawn save_file("")) # open native file dialog and choose a filename
@@ -470,29 +469,22 @@ function start_AdA_Picker(;data=nothing)
                 if filetype == "jld2"
                     # file should contain: profile information, picker information, picks, lat and lon of the picked points
                     profile_info = (start_lonlat = data.start_lonlat,end_lonlat = data.end_lonlat) # profile information
-                    println("profile information generated")
                     # interpolate the lat and lon from the profile end points to the picked points
                     xtmp = [minimum(data.VolData.fields.x_profile), maximum(data.VolData.fields.x_profile)]
-                    println("xtmp generated")
                     lontmp = [data.start_lonlat[1], data.end_lonlat[1]]
-                    println("lontmp generated")
                     lattmp = [data.start_lonlat[2], data.end_lonlat[2]]  
-                    println("lattmp generated")
 
                     interp_linear_lon = linear_interpolation(xtmp, lontmp)
                     interp_linear_lat = linear_interpolation(xtmp, lattmp)
-                    println("interpolators generated")
                     lon_pick = interp_linear_lon(pickarray[:,1])
                     lat_pick = interp_linear_lat(pickarray[:,1])
-                    println("lon and lat generated")
 
                     # add lon and lat to the pickarray
                     pickarray = hcat(pickarray,lon_pick,lat_pick)
-                    println("lon and lat added to pickarray")
 
                     # save as jld2 file
                     jldsave(fn_save; picks=pickarray, profile_info=profile_info, user_name=pick_name.stored_string[], date=now())
-                    println(fn_save*" saved")
+                    println("... "*fn_save*" saved")
                 elseif filetype == "csv"    
                     println("Saving as csv is not implemented yet")
                 else
