@@ -224,7 +224,7 @@ function start_AdA_Picker(;data=nothing)
                 text!(topo_ax1,maximum(x_topo),maximum(y_topo);text = string(round.(data.end_lonlat,digits=2)), align = (:right, :center),offset = (-20, 0))
 
                 # display the profile name in the middle of the topography plot
-                text!(topo_ax1,mean(x_topo),maximum(y_topo);text = string(fn), align = (:center, :center),offset = (0, 20), fontsize = 16)
+                text!(topo_ax1,0.5*(maximum(x_topo)-minimum(x_topo)),maximum(y_topo);text = string(fn), align = (:center, :center),offset = (0, 20))
 
                 # plot layout
                 rowgap!(panel_plot,0) # no vertical space between topo and profile plot
