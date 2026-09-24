@@ -222,9 +222,8 @@ function start_AdA_Picker(;data=nothing)
                 # display the profile limits
                 text!(topo_ax1,minimum(x_topo),maximum(y_topo);text = string(round.(data.start_lonlat,digits=2)),align = (:left, :center),offset = (20, 0))
                 text!(topo_ax1,maximum(x_topo),maximum(y_topo);text = string(round.(data.end_lonlat,digits=2)), align = (:right, :center),offset = (-20, 0))
-
-                # display the profile name in the middle of the topography plot
-                # text!(topo_ax1,0.5*(maximum(x_topo)-minimum(x_topo)),maximum(y_topo);text = string(fn), align = (:center, :center),offset = (0, 20))
+                # display the profile name in the title
+                topo_ax1.title = basename(fn)
 
                 # plot layout
                 rowgap!(panel_plot,0) # no vertical space between topo and profile plot
@@ -252,7 +251,7 @@ function start_AdA_Picker(;data=nothing)
                 surf_plot = Vector{Lines{Tuple{Vector{Point{2, Float64}}}}}()
                 surflabel_plot = Vector{String}()
 
-                for isurf in 1:length(surf_names)
+                for isurf in eachindex(surf_names)
                     surf_data = data.SurfData[surf_names[isurf]]
                     x_surf = surf_data.fields.x_profile
                     y_surf = surf_data.depth.val
@@ -267,7 +266,7 @@ function start_AdA_Picker(;data=nothing)
                 # plot all point data
                 point_plot = Vector{Scatter{Tuple{Vector{Point{2, Float64}}}}}()
                 pointlabel_plot = Vector{String}()
-                for ipoint in 1:length(point_names)
+                for ipoint in eachindex(point_names)
                     # get the coordinates of the points
                     point_data = data.PointData[point_names[ipoint]]
                     x_point = point_data.fields.x_profile
@@ -385,7 +384,7 @@ function start_AdA_Picker(;data=nothing)
                         pickarray = data_picks["picks"]
                         # convert to Point3f vector
                         pickpoints = Point3f[]
-                        for ipick in 1:size(pickarray,1)
+                        for ipick in eachindex(pickarray,1)
                             push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],1000)) # z-value is set to 1000 to ensure that picks are always on top
                         end
                         picks[] = pickpoints
