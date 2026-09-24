@@ -251,7 +251,7 @@ function start_AdA_Picker(;data=nothing)
                 surf_plot = Vector{Lines{Tuple{Vector{Point{2, Float64}}}}}()
                 surflabel_plot = Vector{String}()
 
-                for isurf in 1:length(surf_names)
+                for isurf in eachindex(surf_names)
                     surf_data = data.SurfData[surf_names[isurf]]
                     x_surf = surf_data.fields.x_profile
                     y_surf = surf_data.depth.val
@@ -266,7 +266,7 @@ function start_AdA_Picker(;data=nothing)
                 # plot all point data
                 point_plot = Vector{Scatter{Tuple{Vector{Point{2, Float64}}}}}()
                 pointlabel_plot = Vector{String}()
-                for ipoint in 1:length(point_names)
+                for ipoint in eachindex(point_names)
                     # get the coordinates of the points
                     point_data = data.PointData[point_names[ipoint]]
                     x_point = point_data.fields.x_profile
@@ -384,7 +384,7 @@ function start_AdA_Picker(;data=nothing)
                         pickarray = data_picks["picks"]
                         # convert to Point3f vector
                         pickpoints = Point3f[]
-                        for ipick in 1:size(pickarray,1)
+                        for ipick in eachindex(pickarray,1)
                             push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],1000)) # z-value is set to 1000 to ensure that picks are always on top
                         end
                         picks[] = pickpoints
