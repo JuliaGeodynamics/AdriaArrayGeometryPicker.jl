@@ -171,7 +171,7 @@ function start_AdA_Picker(;data=nothing)
 
                 # create a vector to store the toggles for the surface controls 
                 surf_toggles = []
-                for isurf in 1:length(surf_names)
+                for isurf in eachindex(surf_names)
                     # create a label for the surface data
                     Label(surf_data_panel[isurf+1, 1], String(surf_names[isurf]), fontsize = 14, halign = :left)
                     # create a toggle for the surface data
@@ -188,7 +188,7 @@ function start_AdA_Picker(;data=nothing)
                 ipoint = 1
                 # create a vector to store the toggles for the surface controls 
                 point_toggles = []
-                for ipoint in 1:length(point_names)
+                for ipoint in eachindex(point_names)
                     # create a label for the point data
                     Label(point_data_panel[1+ipoint, 1], String(point_names[ipoint]), fontsize = 14, halign = :left)
                     # create a toggle for the point data
@@ -224,7 +224,7 @@ function start_AdA_Picker(;data=nothing)
                 text!(topo_ax1,maximum(x_topo),maximum(y_topo);text = string(round.(data.end_lonlat,digits=2)), align = (:right, :center),offset = (-20, 0))
 
                 # display the profile name in the middle of the topography plot
-                text!(topo_ax1,0.5*(maximum(x_topo)-minimum(x_topo)),maximum(y_topo);text = string(fn), align = (:center, :center),offset = (0, 20))
+                # text!(topo_ax1,0.5*(maximum(x_topo)-minimum(x_topo)),maximum(y_topo);text = string(fn), align = (:center, :center),offset = (0, 20))
 
                 # plot layout
                 rowgap!(panel_plot,0) # no vertical space between topo and profile plot
