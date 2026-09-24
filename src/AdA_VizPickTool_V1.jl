@@ -91,7 +91,9 @@ function start_AdA_Picker(;data=nothing)
 
                 data = load(fn,"Profile") # we need to make this more foolproof, I don't think we can rely on people calling hteir profile structure Profile
                 println(fn*" loaded")
-            
+                
+                curfile = basename(fn)
+
                 ### Volume Data ###
                 field_names = (collect(keys(data.VolData.fields)))
                     println("Volume data extracted")
@@ -223,7 +225,7 @@ function start_AdA_Picker(;data=nothing)
                 text!(topo_ax1,minimum(x_topo),maximum(y_topo);text = string(round.(data.start_lonlat,digits=2)),align = (:left, :center),offset = (20, 0))
                 text!(topo_ax1,maximum(x_topo),maximum(y_topo);text = string(round.(data.end_lonlat,digits=2)), align = (:right, :center),offset = (-20, 0))
                 # display the profile name in the title
-                topo_ax1.title = basename(fn)
+                topo_ax1.title = curfile
 
                 # plot layout
                 rowgap!(panel_plot,0) # no vertical space between topo and profile plot
@@ -367,7 +369,6 @@ function start_AdA_Picker(;data=nothing)
                 # see if we are dealing with a jld2 or txt file (given as csv) -> distinguish via the extension
                 filetype = split(fn,".")[end] # this gives us everything after the last dot in the filename
                 if filetype == "jld2"
-                    println(fn*" loading")
                     data_picks = load(fn) 
                     println(fn*" loaded")
                 
@@ -380,20 +381,23 @@ function start_AdA_Picker(;data=nothing)
                     # check if the start and end point match
                     if  data_picks["profile_info"].start_lonlat == data.start_lonlat && data_picks["profile_info"].end_lonlat == data.end_lonlat
                         println("The loaded picks belong to the current profile. Loading picks...")
-                        # assign the loaded pick data to the picks observable
-                        pickarray = data_picks["picks"]
-                        # convert to Point3f vector
-                        pickpoints = Point3f[]
-                        for ipick in eachindex(pickarray,1)
-                            push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],1000)) # z-value is set to 1000 to ensure that picks are always on top
-                        end
-                        picks[] = pickpoints
-                        notify(picks)
-                        println("Picks loaded: ",length(picks[]))
                     else
-                        println("Warning: The loaded picks do not belong to the current profile. Picks not loaded.")
+                        println("Warning: The loaded picks do not belong to the current profile. Proceed with caution")
                     end
                     
+                    # assign the loaded pick data to the picks observable
+                    pickarray = data_picks["picks"]
+                    # convert to Point3f vector
+                    pickpoints = Point3f[]
+
+                    for ipick in eachindex(pickarray.x)
+                        push!(pickpoints,Point3f(pickarray.x[ipick],pickarray.depth[ipick],10000)) # z-value is set to 10000 to ensure that picks are always on top
+                    end
+                    picks[] = pickpoints
+                    notify(picks)
+                    println("Picks loaded: ",length(picks[]))
+
+
                 elseif filetype == "csv"
                         # Not implemented yet
                 elseif filetype == ""
@@ -407,7 +411,6 @@ function start_AdA_Picker(;data=nothing)
             # load the picks as point data, these will be treated in a similar way as e.g. the seismicity data
             @async begin 
                 fn = fetch(Threads.@spawn pick_file(""))
-                println(fn)
 
                 # test plot in ax1
                 #lines!(ax1, [0,100],[0,-200], color = :red,linewidth = 3)
@@ -420,25 +423,24 @@ function start_AdA_Picker(;data=nothing)
 
                     if  data_picks["profile_info"].start_lonlat == data.start_lonlat && data_picks["profile_info"].end_lonlat == data.end_lonlat
                         println("The loaded picks belong to the current profile. Loading picks...")
-                        # assign the loaded pick data to the picks observable
-                        pickarray = data_picks["picks"]
-                        x_pick = pickarray[:,1]
-                        y_pick = pickarray[:,2]
-                        println("Picks loaded")                        
-
-                        # add these picks as a dashed line
-                        lines!(ax1, x_pick,y_pick, color = :white,linewidth = 3,visible = @lift($(compare_toggle.active) ? true : false)) # white background line
-                        pp = lines!(ax1, x_pick,y_pick,color=:red,linewidth=2,linestyle=(:dot,:dense),visible = @lift($(compare_toggle.active) ? true : false)) # black main line
-                        #push!(comppick_plot,pp)
-                        #push!(comppick_label,data_picks["user_name"])
-                        
-                        println("Picks plotted")
-
                     else
-                        println("Warning: The loaded picks do not belong to the current profile. Picks not loaded.")
+                        println("Warning: The loaded picks do not belong to the current profile. Proceed with care.")
                     end
+                    
+                    # assign the loaded pick data to the picks observable
+                    pickarray = data_picks["picks"]
+                    x_pick = pickarray.x
+                    y_pick = pickarray.depth
+                    println("Picks loaded")                        
 
-                    # now create the pick data
+                    # add these picks as a dashed line
+                    lines!(ax1, x_pick,y_pick, color = :white,linewidth = 3,visible = @lift($(compare_toggle.active) ? true : false)) # white background line
+                    pp = lines!(ax1, x_pick,y_pick,color=:red,linewidth=2,linestyle=(:dot,:dense),visible = @lift($(compare_toggle.active) ? true : false)) # black main line
+                    #push!(comppick_plot,pp)
+                    #push!(comppick_label,data_picks["user_name"])
+                        
+                    println("Picks plotted")
+
                 elseif filetype == "csv"
                     println("This is not a valid pick file at the moment. Feel free to add this functionality :)")
                     #csvread()
@@ -476,7 +478,7 @@ function start_AdA_Picker(;data=nothing)
 
             picks = (x = x_pick, depth = y_pick, lat = lat_pick, lon = lon_pick)
             pick_info = (user_name = pick_name.stored_string[], date = now(), units = (x = "km", depth = "km", lat = "deg", lon = "deg"))
-            profile_info = (start_lonlat = data.start_lonlat, end_lonlat = data.end_lonlat, profile_datafile = fn)
+            profile_info = (start_lonlat = data.start_lonlat, end_lonlat = data.end_lonlat)
             
             @async begin 
                 fn_save = fetch(Threads.@spawn save_file("")) # open native file dialog and choose a filename
