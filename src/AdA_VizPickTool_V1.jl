@@ -394,9 +394,9 @@ function start_AdA_Picker(;data=nothing)
                     pickpoints = Point3f[]
                     println("Picks initialized")
 
-                    for ipick in eachindex(pickarray,1)
+                    for ipick in eachindex(pickarray.x)
 
-                        push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],10000)) # z-value is set to 10000 to ensure that picks are always on top
+                        push!(pickpoints,Point3f(pickarray.x[ipick],pickarray.depth[ipick],10000)) # z-value is set to 10000 to ensure that picks are always on top
                         println("     pick ",ipick," assigned")
                     end
                     picks[] = pickpoints
@@ -437,8 +437,8 @@ function start_AdA_Picker(;data=nothing)
                     
                     # assign the loaded pick data to the picks observable
                     pickarray = data_picks["picks"]
-                    x_pick = pickarray[:,1]
-                    y_pick = pickarray[:,2]
+                    x_pick = pickarray.x
+                    y_pick = pickarray.depth
                     println("Picks loaded")                        
 
                     # add these picks as a dashed line
