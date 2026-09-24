@@ -382,20 +382,22 @@ function start_AdA_Picker(;data=nothing)
                     # check if the start and end point match
                     if  data_picks["profile_info"].start_lonlat == data.start_lonlat && data_picks["profile_info"].end_lonlat == data.end_lonlat
                         println("The loaded picks belong to the current profile. Loading picks...")
-                        # assign the loaded pick data to the picks observable
-                        pickarray = data_picks["picks"]
-                        # convert to Point3f vector
-                        pickpoints = Point3f[]
-                        for ipick in eachindex(pickarray,1)
-                            push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],1000)) # z-value is set to 1000 to ensure that picks are always on top
-                        end
-                        picks[] = pickpoints
-                        notify(picks)
-                        println("Picks loaded: ",length(picks[]))
                     else
-                        println("Warning: The loaded picks do not belong to the current profile. Picks not loaded.")
+                        println("Warning: The loaded picks do not belong to the current profile. Proceed with caution")
                     end
                     
+                    # assign the loaded pick data to the picks observable
+                    pickarray = data_picks["picks"]
+                    # convert to Point3f vector
+                    pickpoints = Point3f[]
+                    for ipick in eachindex(pickarray,1)
+                        push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],1000)) # z-value is set to 1000 to ensure that picks are always on top
+                    end
+                    picks[] = pickpoints
+                    notify(picks)
+                    println("Picks loaded: ",length(picks[]))
+
+
                 elseif filetype == "csv"
                         # Not implemented yet
                 elseif filetype == ""
