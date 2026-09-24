@@ -223,7 +223,7 @@ function start_AdA_Picker(;data=nothing)
                 text!(topo_ax1,minimum(x_topo),maximum(y_topo);text = string(round.(data.start_lonlat,digits=2)),align = (:left, :center),offset = (20, 0))
                 text!(topo_ax1,maximum(x_topo),maximum(y_topo);text = string(round.(data.end_lonlat,digits=2)), align = (:right, :center),offset = (-20, 0))
 
-                topo_ax1.title = "profilename"
+                topo_ax1.title = fn
                 # display the profile name in the middle of the topography plot
                 #text!(topo_ax1,minimum(x_topo),maximum(y_topo);text = "profilename", align = (:center, :center),offset = (0, 20))
 
