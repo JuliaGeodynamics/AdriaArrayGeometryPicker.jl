@@ -369,7 +369,6 @@ function start_AdA_Picker(;data=nothing)
                 # see if we are dealing with a jld2 or txt file (given as csv) -> distinguish via the extension
                 filetype = split(fn,".")[end] # this gives us everything after the last dot in the filename
                 if filetype == "jld2"
-                    println(fn*" loading")
                     data_picks = load(fn) 
                     println(fn*" loaded")
                 
@@ -388,19 +387,13 @@ function start_AdA_Picker(;data=nothing)
                     
                     # assign the loaded pick data to the picks observable
                     pickarray = data_picks["picks"]
-                    println(pickarray.x)
-                    println(pickarray.depth)
                     # convert to Point3f vector
                     pickpoints = Point3f[]
-                    println("Picks initialized")
 
                     for ipick in eachindex(pickarray.x)
-
                         push!(pickpoints,Point3f(pickarray.x[ipick],pickarray.depth[ipick],10000)) # z-value is set to 10000 to ensure that picks are always on top
-                        println("     pick ",ipick," assigned")
                     end
                     picks[] = pickpoints
-                    println("Picks assigned")
                     notify(picks)
                     println("Picks loaded: ",length(picks[]))
 
@@ -418,7 +411,6 @@ function start_AdA_Picker(;data=nothing)
             # load the picks as point data, these will be treated in a similar way as e.g. the seismicity data
             @async begin 
                 fn = fetch(Threads.@spawn pick_file(""))
-                println(fn)
 
                 # test plot in ax1
                 #lines!(ax1, [0,100],[0,-200], color = :red,linewidth = 3)
