@@ -388,12 +388,14 @@ function start_AdA_Picker(;data=nothing)
                     
                     # assign the loaded pick data to the picks observable
                     pickarray = data_picks["picks"]
-                    println(pickarray)
+                    println(pickarray.x)
+                    println(pickarray.depth)
                     # convert to Point3f vector
                     pickpoints = Point3f[]
                     println("Picks initialized")
 
                     for ipick in eachindex(pickarray,1)
+
                         push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],10000)) # z-value is set to 10000 to ensure that picks are always on top
                         println("     pick ",ipick," assigned")
                     end
@@ -429,25 +431,24 @@ function start_AdA_Picker(;data=nothing)
 
                     if  data_picks["profile_info"].start_lonlat == data.start_lonlat && data_picks["profile_info"].end_lonlat == data.end_lonlat
                         println("The loaded picks belong to the current profile. Loading picks...")
-                        # assign the loaded pick data to the picks observable
-                        pickarray = data_picks["picks"]
-                        x_pick = pickarray[:,1]
-                        y_pick = pickarray[:,2]
-                        println("Picks loaded")                        
-
-                        # add these picks as a dashed line
-                        lines!(ax1, x_pick,y_pick, color = :white,linewidth = 3,visible = @lift($(compare_toggle.active) ? true : false)) # white background line
-                        pp = lines!(ax1, x_pick,y_pick,color=:red,linewidth=2,linestyle=(:dot,:dense),visible = @lift($(compare_toggle.active) ? true : false)) # black main line
-                        #push!(comppick_plot,pp)
-                        #push!(comppick_label,data_picks["user_name"])
-                        
-                        println("Picks plotted")
-
                     else
-                        println("Warning: The loaded picks do not belong to the current profile. Picks not loaded.")
+                        println("Warning: The loaded picks do not belong to the current profile. Proceed with care.")
                     end
+                    
+                    # assign the loaded pick data to the picks observable
+                    pickarray = data_picks["picks"]
+                    x_pick = pickarray[:,1]
+                    y_pick = pickarray[:,2]
+                    println("Picks loaded")                        
 
-                    # now create the pick data
+                    # add these picks as a dashed line
+                    lines!(ax1, x_pick,y_pick, color = :white,linewidth = 3,visible = @lift($(compare_toggle.active) ? true : false)) # white background line
+                    pp = lines!(ax1, x_pick,y_pick,color=:red,linewidth=2,linestyle=(:dot,:dense),visible = @lift($(compare_toggle.active) ? true : false)) # black main line
+                    #push!(comppick_plot,pp)
+                    #push!(comppick_label,data_picks["user_name"])
+                        
+                    println("Picks plotted")
+
                 elseif filetype == "csv"
                     println("This is not a valid pick file at the moment. Feel free to add this functionality :)")
                     #csvread()
