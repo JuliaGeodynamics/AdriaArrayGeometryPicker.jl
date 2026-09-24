@@ -390,10 +390,13 @@ function start_AdA_Picker(;data=nothing)
                     pickarray = data_picks["picks"]
                     # convert to Point3f vector
                     pickpoints = Point3f[]
+                    println("Picks initialized")
+
                     for ipick in eachindex(pickarray,1)
-                        push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],1000)) # z-value is set to 1000 to ensure that picks are always on top
+                        push!(pickpoints,Point3f(pickarray[ipick,1],pickarray[ipick,2],10000)) # z-value is set to 10000 to ensure that picks are always on top
                     end
                     picks[] = pickpoints
+                    println("Picks assigned")
                     notify(picks)
                     println("Picks loaded: ",length(picks[]))
 
