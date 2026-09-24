@@ -478,7 +478,7 @@ function start_AdA_Picker(;data=nothing)
 
             picks = (x = x_pick, depth = y_pick, lat = lat_pick, lon = lon_pick)
             pick_info = (user_name = pick_name.stored_string[], date = now(), units = (x = "km", depth = "km", lat = "deg", lon = "deg"))
-            profile_info = (start_lonlat = data.start_lonlat, end_lonlat = data.end_lonlat, profile_datafile = fn)
+            profile_info = (start_lonlat = data.start_lonlat, end_lonlat = data.end_lonlat)
             
             @async begin 
                 fn_save = fetch(Threads.@spawn save_file("")) # open native file dialog and choose a filename
