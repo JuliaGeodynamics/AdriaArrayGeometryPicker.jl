@@ -91,7 +91,9 @@ function start_AdA_Picker(;data=nothing)
 
                 data = load(fn,"Profile") # we need to make this more foolproof, I don't think we can rely on people calling hteir profile structure Profile
                 println(fn*" loaded")
-            
+                
+                curfile = basename(fn)
+
                 ### Volume Data ###
                 field_names = (collect(keys(data.VolData.fields)))
                     println("Volume data extracted")
@@ -223,7 +225,7 @@ function start_AdA_Picker(;data=nothing)
                 text!(topo_ax1,minimum(x_topo),maximum(y_topo);text = string(round.(data.start_lonlat,digits=2)),align = (:left, :center),offset = (20, 0))
                 text!(topo_ax1,maximum(x_topo),maximum(y_topo);text = string(round.(data.end_lonlat,digits=2)), align = (:right, :center),offset = (-20, 0))
                 # display the profile name in the title
-                topo_ax1.title = basename(fn)
+                topo_ax1.title = curfile
 
                 # plot layout
                 rowgap!(panel_plot,0) # no vertical space between topo and profile plot
