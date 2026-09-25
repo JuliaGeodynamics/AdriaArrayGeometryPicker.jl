@@ -87,7 +87,7 @@ function start_AdA_Picker(;data=nothing)
             ############################################################
             # LOAD PROFILE DATA
             @async begin 
-                fn = fetch(Threads.@spawn pick_file(""))
+                fn = fetch(Threads.@spawn PICK_FILE[](""))
 
                 data = load(fn,"Profile") # we need to make this more foolproof, I don't think we can rely on people calling hteir profile structure Profile
                 println(fn*" loaded")
@@ -362,7 +362,7 @@ function start_AdA_Picker(;data=nothing)
         elseif s == "Load Picks..."
             # load picks from a text file, these will be modifyable
             @async begin 
-                fn = fetch(Threads.@spawn pick_file(""))
+                fn = fetch(Threads.@spawn PICK_FILE[](""))
                 println(fn)
 
                 
@@ -410,7 +410,7 @@ function start_AdA_Picker(;data=nothing)
         elseif s == "Load Picks (not modifyable)..."
             # load the picks as point data, these will be treated in a similar way as e.g. the seismicity data
             @async begin 
-                fn = fetch(Threads.@spawn pick_file(""))
+                fn = fetch(Threads.@spawn PICK_FILE[](""))
 
                 # test plot in ax1
                 #lines!(ax1, [0,100],[0,-200], color = :red,linewidth = 3)
@@ -476,19 +476,20 @@ function start_AdA_Picker(;data=nothing)
             lat_pick = interp_linear_lat(x_pick)
             lon_pick = interp_linear_lon(x_pick)
 
-            picks = (x = x_pick, depth = y_pick, lat = lat_pick, lon = lon_pick)
+            # use a new name here: `picks` is the (global) Observable used for picking
+            pick_data = (x = x_pick, depth = y_pick, lat = lat_pick, lon = lon_pick)
             pick_info = (user_name = pick_name.stored_string[], date = now(), units = (x = "km", depth = "km", lat = "deg", lon = "deg"))
             profile_info = (start_lonlat = data.start_lonlat, end_lonlat = data.end_lonlat)
             
             @async begin 
-                fn_save = fetch(Threads.@spawn save_file("")) # open native file dialog and choose a filename
+                fn_save = fetch(Threads.@spawn SAVE_FILE[]("")) # open native file dialog and choose a filename
                 filetype = split(fn_save,".")[end] # get the ending
                 # save depending on file ending
                 if filetype == "jld2"
                     # file should contain: profile information, picker information, picks, lat and lon of the picked points
 
                     # save as jld2 file
-                    jldsave(fn_save; picks=picks, pick_info=pick_info, profile_info=profile_info)
+                    jldsave(fn_save; picks=pick_data, pick_info=pick_info, profile_info=profile_info)
                     println("... "*fn_save*" saved")
                 elseif filetype == "csv"    
                     println("Saving as csv is not implemented yet")
@@ -503,7 +504,7 @@ function start_AdA_Picker(;data=nothing)
         elseif s == "Save Screenshot..."
             # save a screen shot of the makie window
             @async begin 
-                fn_screen = fetch(Threads.@spawn save_file(""))
+                fn_screen = fetch(Threads.@spawn SAVE_FILE[](""))
                 save(fn_screen, fig, px_per_unit = 2)
                 println(fn_screen*" saved")
             end

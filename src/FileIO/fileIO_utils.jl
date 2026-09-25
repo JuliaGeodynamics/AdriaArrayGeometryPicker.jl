@@ -4,11 +4,16 @@ using FileIO
 using NativeFileDialog
 using JLD2
 
+# The GUI opens the native file dialogs through these Refs, so that the tests can
+# replace them by functions that return a fixed filename (there is no user on CI)
+const PICK_FILE = Ref{Function}(pick_file)
+const SAVE_FILE = Ref{Function}(save_file)
+
 # function for fileIO menu response
 function menu_fileIO_response(s)
     if s == "Load Profile..."
         @async begin 
-            filename = fetch(Threads.@spawn pick_file(""))
+            filename = fetch(Threads.@spawn PICK_FILE[](""))
             println(filename)
             #data = load_GMG(filename) # load the profile data, this did not work properly
             data = load(filename,"Profile") 
