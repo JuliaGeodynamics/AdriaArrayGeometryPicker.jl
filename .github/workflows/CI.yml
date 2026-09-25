@@ -1,0 +1,60 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+    tags: ['*']
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  # skip intermediate builds: always, cancel intermediate builds: only if it is a pull request build
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    permissions: # needed to allow julia-actions/cache to proactively delete old caches that it has created
+      actions: write
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - 'lts' # 1.10
+          - '1.11'
+          - '1.12'
+          - '1'   # latest release
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.version }}
+      - uses: julia-actions/cache@v2
+
+      # GLMakie needs OpenGL. On Linux, we use a virtual display and the GUI tests are
+      # required to run. On Windows we install a software OpenGL driver (Mesa); there and
+      # on macOS the GUI tests are run if an OpenGL context can be created.
+      - name: Install virtual display (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1 libglx-mesa0 mesa-utils
+      - name: Install Mesa OpenGL (Windows)
+        if: runner.os == 'Windows'
+        uses: ssciwr/setup-mesa-dist-win@v2
+
+      - name: Disable GLMakie precompilation (macOS)
+        # the GLMakie precompile workload needs OpenGL, which the macOS runners don't have
+        if: runner.os == 'macOS'
+        run: printf '[GLMakie]\nprecompile_workload = false\n' > LocalPreferences.toml
+
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
+        with:
+          prefix: ${{ runner.os == 'Linux' && 'xvfb-run -s ''-screen 0 1024x768x24''' || '' }}
+        env:
+          ADA_GUI_TESTS: ${{ runner.os == 'Linux' && 'true' || 'auto' }}
