@@ -28,6 +28,8 @@ end
 
     fig = start_AdA_Picker()
     @test fig isa Figure
+    gui = AGP.current_gui()
+    @test gui.fig === fig
 
     menus     = find_blocks(fig, Menu)
     main_menu = only(filter(m -> "Load Profile..." in m.options[], menus))
@@ -43,7 +45,7 @@ end
 
         # data axis = the one with the heatmap
         ax = only(filter(ax -> !isempty(find_plots(ax, Heatmap)), find_blocks(fig, Axis)))
-        @test ax === AGP.ax1
+        @test ax === gui.ax_profile
         @test length(find_plots(ax, Scatter)) == 2 # picks + seismicity
 
         # one toggle per surface (only Moho, topography is plotted separately) and point data set
@@ -55,7 +57,7 @@ end
         @test field_menu.options[] == [:dVs, :dVp]
     end
 
-    ax = AGP.ax1
+    ax = gui.ax_profile
     hm = only(find_plots(ax, Heatmap))
 
     @testset "Change field and colormap" begin
@@ -76,7 +78,7 @@ end
         # add picks, as done by the mouse callbacks
         x_picks     = [100.0, 300.0, 500.0]
         depth_picks = [-40.0, -80.0, -120.0]
-        AGP.picks[] = [Point3f(x, d, 1000) for (x, d) in zip(x_picks, depth_picks)]
+        gui.picks[] = [Point3f(x, d, 1000) for (x, d) in zip(x_picks, depth_picks)]
 
         AGP.SAVE_FILE[] = _ -> picks_file
         select!(main_menu, "Save Picks...")
@@ -99,15 +101,17 @@ end
         @test data["profile_info"].end_lonlat   == (19.0, 45.0)
 
         # picking has to keep working after saving
-        @test AGP.picks isa Observable
+        push!(gui.picks[], Point3f(600, -150, 1000))
+        notify(gui.picks)
+        @test length(gui.picks[]) == 4
 
         # load them back as modifiable picks
-        AGP.picks[] = Point3f[]
+        gui.picks[] = Point3f[]
         AGP.PICK_FILE[] = _ -> picks_file
         select!(main_menu, "Load Picks...")
-        @test wait_until(() -> length(AGP.picks[]) == 3)
-        @test [p[1] for p in AGP.picks[]] ≈ x_picks
-        @test [p[2] for p in AGP.picks[]] ≈ depth_picks
+        @test wait_until(() -> length(gui.picks[]) == 3)
+        @test [p[1] for p in gui.picks[]] ≈ x_picks
+        @test [p[2] for p in gui.picks[]] ≈ depth_picks
 
         # and as fixed picks for comparison, which adds two lines to the profile
         nlines = length(find_plots(ax, Lines))
@@ -122,4 +126,12 @@ end
     end
 
     GLMakie.closeall()
+
+    @testset "Start with a profile" begin
+        fig = start_AdA_Picker(data = profile_file)
+        gui = AGP.current_gui()
+        @test gui.profile_file == "test_profile.jld2"
+        @test length(find_plots(gui.ax_profile, Heatmap)) == 1
+        GLMakie.closeall()
+    end
 end
