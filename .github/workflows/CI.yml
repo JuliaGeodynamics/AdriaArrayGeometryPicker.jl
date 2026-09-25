@@ -47,6 +47,11 @@ jobs:
         if: runner.os == 'Windows'
         uses: ssciwr/setup-mesa-dist-win@v2
 
+      - name: Disable GLMakie precompilation (macOS)
+        # the GLMakie precompile workload needs OpenGL, which the macOS runners don't have
+        if: runner.os == 'macOS'
+        run: printf '[GLMakie]\nprecompile_workload = false\n' > LocalPreferences.toml
+
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
         with:

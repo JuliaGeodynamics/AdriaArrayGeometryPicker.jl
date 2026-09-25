@@ -36,13 +36,15 @@ end
         AGP.PICK_FILE[] = _ -> profile_file
         select!(main_menu, "Load Profile...")
 
-        # the profile axis gets the filename as title once everything is plotted
-        @test wait_until(() -> any(ax -> ax.title[] == "test_profile.jld2", find_blocks(fig, Axis)))
+        # loading is done once the colormap menu (the last control) has its callback
+        loaded() = any(m -> :roma in m.options[] && !isempty(GLMakie.Observables.listeners(m.selection)), find_blocks(fig, Menu))
+        @test wait_until(loaded)
+        @test any(ax -> ax.title[] == "test_profile.jld2", find_blocks(fig, Axis))
 
         # data axis = the one with the heatmap
         ax = only(filter(ax -> !isempty(find_plots(ax, Heatmap)), find_blocks(fig, Axis)))
         @test ax === AGP.ax1
-        @test wait_until(() -> !isempty(find_plots(ax, Scatter))) # picks + seismicity
+        @test length(find_plots(ax, Scatter)) == 2 # picks + seismicity
 
         # one toggle per surface (only Moho, topography is plotted separately) and point data set
         # (+ the picking and compare toggles)
