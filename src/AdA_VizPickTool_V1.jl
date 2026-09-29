@@ -87,7 +87,7 @@ function start_AdA_Picker(;data=nothing)
             ############################################################
             # LOAD PROFILE DATA
             @async begin 
-                fn = PICK_FILE[]("")
+                fn = fetch(Threads.@spawn PICK_FILE[](""))
 
                 data = load(fn,"Profile") # we need to make this more foolproof, I don't think we can rely on people calling hteir profile structure Profile
                 println(fn*" loaded")
@@ -362,7 +362,7 @@ function start_AdA_Picker(;data=nothing)
         elseif s == "Load Picks..."
             # load picks from a text file, these will be modifyable
             @async begin 
-                fn = PICK_FILE[]("")
+                fn = fetch(Threads.@spawn PICK_FILE[](""))
                 println(fn)
 
                 
@@ -410,7 +410,7 @@ function start_AdA_Picker(;data=nothing)
         elseif s == "Load Picks (not modifyable)..."
             # load the picks as point data, these will be treated in a similar way as e.g. the seismicity data
             @async begin 
-                fn = PICK_FILE[]("")
+                fn = fetch(Threads.@spawn PICK_FILE[](""))
 
                 # test plot in ax1
                 #lines!(ax1, [0,100],[0,-200], color = :red,linewidth = 3)
@@ -482,7 +482,7 @@ function start_AdA_Picker(;data=nothing)
             profile_info = (start_lonlat = data.start_lonlat, end_lonlat = data.end_lonlat)
             
             @async begin 
-                fn_save = SAVE_FILE[]("") # open native file dialog and choose a filename
+                fn_save = fetch(Threads.@spawn SAVE_FILE[]("")) # open native file dialog and choose a filename
                 filetype = split(fn_save,".")[end] # get the ending
                 # save depending on file ending
                 if filetype == "jld2"
@@ -504,7 +504,7 @@ function start_AdA_Picker(;data=nothing)
         elseif s == "Save Screenshot..."
             # save a screen shot of the makie window
             @async begin 
-                fn_screen = SAVE_FILE[]("")
+                fn_screen = fetch(Threads.@spawn SAVE_FILE[](""))
                 save(fn_screen, fig, px_per_unit = 2)
                 println(fn_screen*" saved")
             end
