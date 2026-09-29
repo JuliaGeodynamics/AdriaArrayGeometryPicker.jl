@@ -48,6 +48,8 @@ end
         @test ["Load Profile...", "Load Picks...", "Save Picks...", "Save Screenshot..."] ⊆ menu.options[]
     end
 
+    include("test_data.jl")
+
     if GUI_TESTS
         include("test_gui.jl")
     else
