@@ -45,7 +45,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xvfb libgl1 libglx-mesa0 mesa-utils
       - name: Install Mesa OpenGL (Windows)
         if: runner.os == 'Windows'
-        uses: ssciwr/setup-mesa-dist-win@v2
+        uses: ssciwr/setup-mesa-dist-win@v3
 
       - name: Disable GLMakie precompilation (macOS)
         # the GLMakie precompile workload needs OpenGL, which the macOS runners don't have
