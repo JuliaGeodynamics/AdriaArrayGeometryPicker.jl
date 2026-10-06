@@ -4,6 +4,9 @@
 
 The AdriaArray Geometry Picker is a graphical user interface (GUI) designed to facilitate the visualization and comparison of geophysical datasets and the picking of geometries (e.g. interfaces such as the Moho or a slab top) on them. The name stems from the [*AdriaArray*](https://orfeus.readthedocs.io/en/latest/adria_array_main.html) initiative, which focuses on investigating the Adria region with seismological methods.
 
+> [!IMPORTANT]
+> The latest version of this package represents a complete rewrite of the original AdriaArrayGeometryPicker.jl. The new version is not compatible with the old one, and the old version is no longer maintained. The new version has been designed to provide similar functionality. Please check the [manual](docs/src/manual/index.md) for the current status of the package.
+
 The AdA Geometry Picker employs [GLMakie](https://docs.makie.org/stable/explanations/backends/glmakie.html) for graphics rendering. It builds on [GeophysicalModelGenerator.jl](https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl) (GMG) for data handling. To use the AdA Geometry Picker, it is therefore necessary to be familiar with GeophysicalModelGenerator.jl.
 
 ![The picker window](docs/src/assets/window_compare.png)
