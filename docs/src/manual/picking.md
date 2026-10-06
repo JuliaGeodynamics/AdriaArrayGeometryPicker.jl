@@ -70,8 +70,16 @@ On a horizontal slice, picks are made in the longitude / latitude plane; see
 Picks belong to one profile:
 
 - When you load another profile, the picks are removed. Save them first.
-- **Load Picks** only accepts picks that were made on the loaded profile (same start and end
-  point, or the same depth for a horizontal slice). Otherwise it logs a warning in the REPL
-  and leaves the current picks alone.
+- **Load Picks** accepts picks that were made on another profile of the same type (other start
+  and end point, or other slice depth). A red warning is then shown below the **Picking** label
+  and logged in the REPL, so you can check the picks. It disappears when you save the picks or
+  load another profile.
+- Picks of a vertical profile are not loaded on a horizontal slice, and picks of a horizontal
+  slice are not loaded on a vertical profile (a warning is logged). The type is stored in the
+  pick file as `profile_type`; files that do not have it are taken as vertical. Without a
+  loaded profile nothing is loaded.
+- On a horizontal slice, picks of another slice are saved with the depth of the loaded slice.
+- **Save Picks** assigns the picks to the loaded profile, the current user name and the
+  current time, whatever profile they were loaded from.
 - To see picks of another profile anyway, use **Load Compare Picks** (see
   [Comparing picks](@ref)).

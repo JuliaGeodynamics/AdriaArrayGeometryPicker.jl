@@ -156,6 +156,7 @@ function picker_layout(; size = (1200, 1000), profile::Union{Nothing,Observable}
         menu_panels = (volume_data_panel, surface_data_panel, point_data_panel,
                        topography_data_panel, compare_picks_panel, map_data_panel, screenshot_data_panel)
         on(profile; priority = -10) do p
+            pick_warning.text[] = ""   # the picks are cleared with a new profile
             p === nothing && return
             foreach(fit_panel!, menu_panels)
         end

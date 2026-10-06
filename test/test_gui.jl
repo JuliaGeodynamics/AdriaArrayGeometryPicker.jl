@@ -4,7 +4,8 @@
 # them to check that the plots look right.
 
 using AdriaArrayGeometryPicker: AdriaArrayGeometryPicker, geometry_picker, is_vertical, is_state_file,
-                                set_pick_points!, set_text!, gui_settings, save_gui_state
+                                set_pick_points!, set_text!, gui_settings, save_gui_state,
+                                set_picks!, current_picks, Picks, points
 import GLMakie
 using JLD2
 
@@ -69,6 +70,50 @@ end
     end
     state = state * ".aagps"
 
+    @testset "picks of another profile" begin
+        session = geometry_picker(PROFILE; save = joinpath(OUT, "other_picks.png"))
+        warning = session.widgets.pick_warning
+        @test warning.text[] == ""
+
+        # same profile: no warning
+        own = current_picks(session)
+        set_pick_points!(session.picking, PICKS)
+        own = current_picks(session)
+        @test set_picks!(session, own)
+        @test warning.text[] == ""
+
+        # another profile: taken over with a warning below the Picking label
+        other = Picks(PICKS; names = (:x, :depth),
+                      metadata = Dict{String,Any}("start_lonlat" => (0.0, 0.0), "end_lonlat" => (1.0, 1.0)))
+        @test_logs (:warn,) @test !set_picks!(session, other)
+        @test pick_xy(session) == PICKS
+        @test !isempty(warning.text[])
+
+        # picks of a horizontal slice are not loaded on a vertical profile
+        horiz = Picks([(NaN, -10.0)]; names = (:x, :depth), columns = (; lon = [14.0], lat = [44.0]),
+                      metadata = Dict{String,Any}("profile_type" => "horizontal", "depth" => -10.0))
+        @test_logs (:warn,) @test !set_picks!(session, horiz)
+        @test pick_xy(session) == PICKS
+
+        # saving assigns them to the current profile, user and time
+        set_text!(session.widgets.pick_name, "ME")
+        saved = current_picks(session)
+        @test saved.metadata["user"] == "ME"
+        @test saved.metadata["start_lonlat"] == session.profile[].start_lonlat
+        @test haskey(saved.metadata, "date")
+        @test [(q[1], q[2]) for q in points(saved)] == PICKS
+
+        # a new profile clears the warning
+        session.profile[] = session.profile[]
+        @test warning.text[] == ""
+
+        # no profile: nothing is loaded
+        empty = geometry_picker(; save = joinpath(OUT, "other_picks_empty.png"))
+        @test_logs (:warn,) @test !set_picks!(empty, other)
+        @test isempty(empty.picking.picks[])
+        GLMakie.closeall()
+    end
+
     @testset "state file" begin
         png = joinpath(OUT, "state.png")
         session = geometry_picker(state; save = png)
@@ -104,6 +149,17 @@ end
             session = geometry_picker(HORIZONTAL; save = png)
             @test isfile(png)
             @test !is_vertical(session.profile[])
+
+            # picks of a vertical profile are not loaded; those of another slice get the depth of this one
+            slice = AdriaArrayGeometryPicker.slice_depth(session.profile[])
+            vert = Picks([(100.0, -50.0)]; names = (:x, :depth), columns = (; lon = [14.0], lat = [44.0]))
+            @test_logs (:warn,) @test !set_picks!(session, vert)
+            @test isempty(session.picking.picks[])
+            set_picks!(session, Picks([(NaN, slice + 10)]; names = (:x, :depth),
+                                      columns = (; lon = [14.0], lat = [44.0]),
+                                      metadata = Dict{String,Any}("profile_type" => "horizontal", "depth" => slice + 10)))
+            @test pick_xy(session) == [(14.0, 44.0)]
+            @test last.(points(current_picks(session))) == [slice]
             GLMakie.closeall()
         end
     else

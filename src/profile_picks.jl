@@ -260,12 +260,16 @@ horizontal_xy(p::Picks) = haskey(p.columns, :lon) && haskey(p.columns, :lat) ?
 """
     set_picks!(session, picks::Picks) -> Bool
 
-Show `picks` as the (editable) picks of the GUI. Picks that do not belong to the loaded profile
-(see [`picks_match_profile`](@ref)) are taken over as well, with a warning below the "Picking"
-label (`widgets.pick_warning`, if the session has it) and in the log; saving them assigns them to
-the current profile, user and time (see [`current_picks`](@ref)). Returns `true` if the picks
-belong to the loaded profile, `false` if not. Without a loaded profile nothing is loaded. The user name of the picks is put into the user name field if
-that is empty. On a horizontal slice the picks are shown at their `lon` / `lat` columns.
+Show `picks` as the (editable) picks of the GUI. Picks that were made on the other type of
+profile (vertical or horizontal, see the metadata `profile_type`; files that do not say are
+vertical) are not loaded: the function warns and returns `false`, as it does without a loaded
+profile. Picks of another profile of the same type (other start / end point or slice depth) are
+taken over with a warning below the "Picking" label (`widgets.pick_warning`, if the session has
+it) and in the log; saving them assigns them to the current profile, user and time (see
+[`current_picks`](@ref)), on a horizontal slice also the depth of the loaded slice. Returns
+`true` if the picks belong to the loaded profile, `false` if not (see [`picks_match_profile`](@ref)).
+The user name of the picks is put into the user name field if that is empty. On a horizontal
+slice the picks are shown at their `lon` / `lat` columns.
 
 # Arguments
 - `session`: as for [`current_picks`](@ref): `profile` and `picking` are required,
@@ -277,7 +281,11 @@ Requires a GeophysicalModelGenerator `ProfileData`.
 function set_picks!(session, p::Picks)
     profile = session.profile[]
     reason = _picks_mismatch(profile, p)
-    profile === nothing && (@warn reason; return false)
+    # picks of a vertical profile are not loaded on a horizontal slice and vice versa
+    if profile === nothing || _picks_type(p) != (is_vertical(profile) ? "vertical" : "horizontal")
+        @warn "$reason, not loaded"
+        return false
+    end
     reason === nothing || @warn "$reason, check the picks before saving"
     _set_pick_warning!(session, reason === nothing ? "" : "Picks of another profile: $reason")
     xy = is_vertical(session.profile[]) ? [(q[1], q[2]) for q in points(p)] : horizontal_xy(p)
@@ -285,5 +293,12 @@ function set_picks!(session, p::Picks)
     user = string(get(p.metadata, "user", ""))
     box = _pick_name(session)
     box !== nothing && !isempty(user) && isempty(_user_name(session)) && set_text!(box, user)
-    return true
+    return reason === nothing
+end
+
+# the warning label below the "Picking" label of a session (`session.widgets.pick_warning`)
+function _set_pick_warning!(session, text)
+    hasproperty(session, :widgets) && hasproperty(session.widgets, :pick_warning) &&
+        (session.widgets.pick_warning.text[] = text)
+    return nothing
 end

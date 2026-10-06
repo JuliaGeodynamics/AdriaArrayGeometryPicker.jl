@@ -40,11 +40,12 @@ AdriaArrayGeometryPicker.metadata(p)         # user, date, profile_file, ...
 save_picks("picks.csv", p)                   # or "picks.aagpp"
 ```
 
-[`set_picks!`](@ref) puts picks into the window. As with **Load Picks**, they are only taken over
-if they belong to the loaded profile:
+[`set_picks!`](@ref) puts picks into the window. As with **Load Picks**, picks of another
+profile of the same type (vertical or horizontal) are taken over as well, with a warning; picks
+of the other type are not loaded:
 
 ```julia
-set_picks!(session, load_picks("picks.aagpp"))       # true if the picks were taken over
+set_picks!(session, load_picks("picks.aagpp"))       # false if they belong to another profile (warning shown, not loaded if of the other type)
 ```
 
 To set picks from coordinates, create a [`Picks`](@ref) object:
