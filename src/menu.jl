@@ -81,7 +81,11 @@ function menu_selection(menu::Menu, session)
             end
         elseif entry == "Save Picks"
             has(entry, :profile, :picking) || return
-            save_picks_dialog(() -> current_picks(session))
+            save_picks_dialog() do
+                p = current_picks(session)
+                _set_pick_warning!(session, "")   # saved picks belong to the current profile
+                return p
+            end
         elseif entry == "Load Picks"
             has(entry, :profile, :picking) || return
             load_picks_dialog(p -> set_picks!(session, p))

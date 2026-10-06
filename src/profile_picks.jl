@@ -151,32 +151,33 @@ GeophysicalModelGenerator `ProfileData`.
 Returns `true` if the picks match, `false` if not or if no profile is loaded.
 """
 function picks_match_profile(profile, p::Picks; warn::Bool = true)
-    if profile === nothing
-        warn && @warn "Load a profile before loading picks"
-        return false
-    end
+    reason = _picks_mismatch(profile, p)
+    reason === nothing && return true
+    warn && @warn reason
+    return false
+end
+
+# why `p` does not belong to `profile` (`nothing` if it does)
+function _picks_mismatch(profile, p::Picks)
+    profile === nothing && return "Load a profile before loading picks"
     kind = is_vertical(profile) ? "vertical" : "horizontal"
-    if _picks_type(p) != kind
-        warn && @warn "The picks were made on a $(_picks_type(p)) profile, the loaded profile is $kind, not loaded"
-        return false
-    end
+    _picks_type(p) != kind &&
+        return "The picks were made on a $(_picks_type(p)) profile, the loaded profile is $kind"
     if !is_vertical(profile)
         depth = tryparse(Float64, string(get(p.metadata, "depth", "")))
         if depth !== nothing && !isapprox(depth, slice_depth(profile); atol = 1e-6)
-            warn && @warn "The picks belong to a slice at depth $depth, the loaded slice is at $(slice_depth(profile)), not loaded"
-            return false
+            return "The picks belong to a slice at depth $depth, the loaded slice is at $(slice_depth(profile))"
         end
-        return true
+        return nothing
     end
     for (key, want) in (("start_lonlat", profile.start_lonlat), ("end_lonlat", profile.end_lonlat))
         have = _picks_lonlat(p, key)
         if have !== nothing && want !== nothing &&
            !(length(have) == 2 && all(isapprox.(have, collect(want); atol = 1e-6)))
-            warn && @warn "The picks belong to a different profile ($key $have, loaded profile: $want), not loaded"
-            return false
+            return "The picks belong to a different profile ($key $have, loaded profile: $want)"
         end
     end
-    return true
+    return nothing
 end
 
 """
@@ -259,10 +260,11 @@ horizontal_xy(p::Picks) = haskey(p.columns, :lon) && haskey(p.columns, :lat) ?
 """
     set_picks!(session, picks::Picks) -> Bool
 
-Show `picks` as the (editable) picks of the GUI. They are only taken over if they belong to the
-loaded profile, i.e. if their start / end coordinates (when the file has them) are those of the
-profile; returns `true` if they were taken over and `false` (and warns) otherwise (see
-[`picks_match_profile`](@ref)). The user name of the picks is put into the user name field if
+Show `picks` as the (editable) picks of the GUI. Picks that do not belong to the loaded profile
+(see [`picks_match_profile`](@ref)) are taken over as well, with a warning below the "Picking"
+label (`widgets.pick_warning`, if the session has it) and in the log; saving them assigns them to
+the current profile, user and time (see [`current_picks`](@ref)). Returns `true` if the picks
+belong to the loaded profile, `false` if not. Without a loaded profile nothing is loaded. The user name of the picks is put into the user name field if
 that is empty. On a horizontal slice the picks are shown at their `lon` / `lat` columns.
 
 # Arguments
@@ -273,7 +275,11 @@ that is empty. On a horizontal slice the picks are shown at their `lon` / `lat` 
 Requires a GeophysicalModelGenerator `ProfileData`.
 """
 function set_picks!(session, p::Picks)
-    picks_match_profile(session.profile[], p) || return false
+    profile = session.profile[]
+    reason = _picks_mismatch(profile, p)
+    profile === nothing && (@warn reason; return false)
+    reason === nothing || @warn "$reason, check the picks before saving"
+    _set_pick_warning!(session, reason === nothing ? "" : "Picks of another profile: $reason")
     xy = is_vertical(session.profile[]) ? [(q[1], q[2]) for q in points(p)] : horizontal_xy(p)
     set_pick_points!(session.picking, xy)
     user = string(get(p.metadata, "user", ""))

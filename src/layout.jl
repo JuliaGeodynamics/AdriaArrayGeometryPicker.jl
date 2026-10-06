@@ -50,7 +50,7 @@ A `NamedTuple` `(; fig, panels, axes, widgets)`:
   `topography_data_panel`, `compare_picks_panel`, `map_data_panel`, `screenshot_data_panel`),
   plus the layouts `logo`, `plot` and `colorbar`,
 - `axes`: `topo_ax`, `profile`, `logo` and `map`,
-- `widgets`: `menu`, `pick_toggle`, `pick_name`, `compare_toggle`, the volume data and contour
+- `widgets`: `menu`, `pick_toggle`, `pick_name`, `pick_warning`, `compare_toggle`, the volume data and contour
   controls `volume_*` (see [`volume_panel!`](@ref)), `map_load_button`, `map_label` (see
   [`map_panel!`](@ref)) and the expand / collapse toggles `*_panel_toggle` of the collapsible
   panels (`volume`, `surface`, `point`, `topography`, `compare`, `map`, `screenshot`).
@@ -90,6 +90,9 @@ function picker_layout(; size = (1200, 1000), profile::Union{Nothing,Observable}
     Label(pick_controls[1, 1], "Picking")
     pick_toggle = Toggle(pick_controls[1, 2]; active = false, toggle_colors...)
     pick_name = Textbox(pick_controls[1, 3]; width = 100, placeholder = "User name")
+    # warning for loaded picks of another profile (see `set_picks!`); wraps so it does not widen the panel
+    pick_warning = Label(pick_controls[2, 1:3], ""; color = :red3, fontsize = 12, halign = :left,
+                         justification = :left, word_wrap = true, tellwidth = false)
     # comparison with other picks
     Label(pick_legend[1, 1], "Compare Picks")
     compare_toggle = Toggle(pick_legend[1, 2]; active = false, toggle_colors...)
@@ -158,7 +161,7 @@ function picker_layout(; size = (1200, 1000), profile::Union{Nothing,Observable}
         end
     end
     axes = (; topo_ax, profile = profile_ax, logo = logo_ax, map = map_ax)
-    widgets = (; menu, pick_toggle, pick_name, compare_toggle, volume_widgets...,
+    widgets = (; menu, pick_toggle, pick_name, pick_warning, compare_toggle, volume_widgets...,
                map_load_button = map_widgets.map_load_button, map_label = map_widgets.map_label,
                volume_panel_toggle = panel_toggles[1], surface_panel_toggle = panel_toggles[2],
                point_panel_toggle = panel_toggles[3], topography_panel_toggle = panel_toggles[4],
