@@ -1,3 +1,4 @@
+```@raw html
 ---
 layout: home
 
@@ -37,3 +38,4 @@ features:
     details: Show the picks of other people next to your own and make them editable.
     link: /manual/compare
 ---
+```
