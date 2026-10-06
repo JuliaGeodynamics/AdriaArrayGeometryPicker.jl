@@ -2,6 +2,10 @@
 
 <p align="center"><img src="./assets/AdA_GeometryPicker_logo_tr.png" alt="AdriaArrayGeometryPicker.jl" width="600"></p>
 
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliageodynamics.github.io/AdriaArrayGeometryPicker.jl/stable)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliageodynamics.github.io/AdriaArrayGeometryPicker.jl/dev/)
+[![Build Status](https://github.com/JuliaGeodynamics/AdriaArrayGeometryPicker.jl/workflows/CI/badge.svg)](https://github.com/JuliaGeodynamics/AdriaArrayGeometryPicker.jl/actions)
+
 The AdriaArray Geometry Picker is a graphical user interface (GUI) designed to facilitate the visualization and comparison of geophysical datasets and the picking of geometries (e.g. interfaces such as the Moho or a slab top) on them. The name stems from the [*AdriaArray*](https://orfeus.readthedocs.io/en/latest/adria_array_main.html) initiative, which focuses on investigating the Adria region with seismological methods.
 
 > [!IMPORTANT]
