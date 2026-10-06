@@ -4,7 +4,7 @@ This page shows how to open the picker window and how to load a profile into it.
 
 ## What you need
 
-- Julia 1.12 or newer with AdriaArrayGeometryPicker.jl installed (see [Installation](@ref)).
+- Julia 1.10 or newer with AdriaArrayGeometryPicker.jl installed (see [Installation](@ref)).
 - A computer with OpenGL support. GLMakie opens a native window, so the picker does not run in
   a browser or on a server without a display.
 - A **profile file** (`.pgmg`). A profile file is a JLD2 file with one GeophysicalModelGenerator

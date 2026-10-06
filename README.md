@@ -39,7 +39,7 @@ Some of the key features of the AdA Picker are:
 More features are still in development.
 
 ### System requirements
-This package heavily relies on GLMakie, therefore it requires an OpenGL enabled graphics card with OpenGL version 3.3 or higher as well as Julia 1.12 or newer.
+This package heavily relies on GLMakie, therefore it requires an OpenGL enabled graphics card with OpenGL version 3.3 or higher as well as Julia 1.10 or newer.
 
 ### Dependencies
 AdriaArrayGeometryPicker relies on several other packages, which are all installed automatically. The most notable ones are:

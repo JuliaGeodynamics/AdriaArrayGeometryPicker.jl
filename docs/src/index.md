@@ -21,7 +21,7 @@ state of the window (profile, settings and picks) and restore it later.
 
 ## Installation
 
-The package is not registered. It needs Julia 1.12 or newer. Install it from a local clone or
+The package is not registered. It needs Julia 1.10 or newer. Install it from a local clone or
 from its git repository:
 
 ```julia
