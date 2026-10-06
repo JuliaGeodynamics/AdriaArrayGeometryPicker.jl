@@ -1,0 +1,48 @@
+name: Documentation
+on:
+  push:
+    branches:
+      - main
+    tags: ['*']
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+jobs:
+  docs:
+    name: Build and deploy documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      actions: write      # julia-actions/cache deletes old caches
+      contents: write     # push to the gh-pages branch
+      pull-requests: write
+      statuses: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.12'
+      - uses: julia-actions/cache@v2
+
+      # the package loads GLMakie, which needs OpenGL even though the documentation does not
+      - name: Install virtual display
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1 libglx-mesa0 mesa-utils
+
+      - name: Install npm packages (VitePress)
+        working-directory: docs
+        run: npm install
+      - name: Install Julia dependencies
+        run: julia --project=docs -e 'using Pkg; Pkg.instantiate()'
+
+      # make.jl builds the Markdown, runs the VitePress build and deploys (to gh-pages for
+      # pushes to main and tags, to previews/PR<n> for pull requests)
+      - name: Build and deploy
+        run: xvfb-run -s '-screen 0 1024x768x24' julia --project=docs docs/make.jl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
