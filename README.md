@@ -146,7 +146,19 @@ This current version is being developed as part of the DFG funded Priority Progr
 
 <p align="center">
     <a href="https://spp-deform.de">
-        <img border="0" alt="SPP DEFORM" src="./assets/DEFORM_logo2.png" width="600">
+        <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="./assets/DEFORM_logo2.png">
+            <source media="(prefers-color-scheme: light)" srcset="./assets/DEFORM_logo.png">
+            <img border="0" alt="SPP DEFORM" src="./assets/DEFORM_logo.png" height="110">
+        </picture>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="https://www.dfg.de">
+        <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="./assets/dfg_logo_schriftzug_weiss_foerderung_en.gif">
+            <source media="(prefers-color-scheme: light)" srcset="./assets/dfg_logo_schriftzug_blau_foerderung_en.gif">
+            <img border="0" alt="Funded by the DFG" src="./assets/dfg_logo_schriftzug_blau_foerderung_en.gif" height="110">
+        </picture>
     </a>
 </p>
 
