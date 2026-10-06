@@ -1,6 +1,6 @@
-<h2> <img src="./assets/AdA_Picker_logo_tr.png" alt="AdriaArrayGeometryPicker.jl" width="50"> AdriaArrayGeometryPicker.jl </h2>
+<h2> <img src="./assets/AdA_GeometryPicker_logo.png" alt="AdriaArrayGeometryPicker.jl" width="50"> AdriaArrayGeometryPicker.jl </h2>
 
-<p align="center"><img src="./assets/AdA_Picker_logo_tr.png" alt="AdriaArrayGeometryPicker.jl" width="600"></p>
+<p align="center"><img src="./assets/AdA_GeometryPicker_logo_tr.png" alt="AdriaArrayGeometryPicker.jl" width="600"></p>
 
 The AdriaArray Geometry Picker is a graphical user interface (GUI) designed to facilitate the
 visualization and comparison of geophysical datasets and the picking of geometries (e.g.
