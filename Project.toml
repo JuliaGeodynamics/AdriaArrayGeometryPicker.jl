@@ -1,0 +1,35 @@
+name = "AdriaArrayGeometryPicker"
+uuid = "a88c9a08-e10e-47da-a1b2-dae0b561311a"
+version = "0.1.0"
+authors = ["Marcel Thielmann <thielmann@geo.uni-bonn.de>"]
+
+[deps]
+ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
+GeophysicalModelGenerator = "3700c31b-fa53-48a6-808a-ef22d5a84742"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
+NativeFileDialog = "e1fe445b-aa65-4df4-81c1-2041507f0fd4"
+
+[sources]
+GeophysicalModelGenerator = {rev = "profile_processing_mt", url = "https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl"}
+
+[compat]
+ColorSchemes = "3.31.0"
+Dates = "1"
+DelimitedFiles = "1"
+GLMakie = "0.13"
+GeometryBasics = "0.5"
+JLD2 = "0.5, 0.6"
+Makie = "0.24"
+NativeFileDialog = "0.2"
+julia = "~1.10.0, 1.12"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
