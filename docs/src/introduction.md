@@ -1,4 +1,4 @@
-# AdriaArrayGeometryPicker.jl
+# Introduction
 
 The AdriaArray geometry picker is a [GLMakie](https://docs.makie.org) window for viewing
 [GeophysicalModelGenerator.jl](https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl)
@@ -53,26 +53,6 @@ Then:
 4. Choose **Menu → Save Picks** and save the picks as `.aagpp` or `.csv`.
 
 The [Picker manual](manual/getting_started.md) explains every part of the window.
-
-## Contents
-
-```@contents
-Pages = [
-    "manual/getting_started.md",
-    "manual/window.md",
-    "manual/panels.md",
-    "manual/picking.md",
-    "manual/files.md",
-    "manual/compare.md",
-    "manual/horizontal.md",
-    "manual/scripting.md",
-    "manual/troubleshooting.md",
-    "formats.md",
-    "api/public.md",
-    "api/internals.md",
-]
-Depth = 1
-```
 
 ## Origin
 

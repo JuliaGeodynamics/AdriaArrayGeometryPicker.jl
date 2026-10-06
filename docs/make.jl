@@ -30,6 +30,7 @@ makedocs(;
     ),
     pages = [
         "Home" => "index.md",
+        "Introduction" => "introduction.md",
         "Picker manual" => [
             "Getting started" => "manual/getting_started.md",
             "The window" => "manual/window.md",
@@ -38,7 +39,7 @@ makedocs(;
             "Files: picks, states, screenshots" => "manual/files.md",
             "Comparing picks" => "manual/compare.md",
             "Horizontal slices" => "manual/horizontal.md",
-            "Using the picker from the REPL" => "manual/scripting.md",
+            # "Using the picker from the REPL" => "manual/scripting.md",   # hidden from the navigation; the page is still built and reachable by its URL
             "Troubleshooting" => "manual/troubleshooting.md",
         ],
         "File formats" => "formats.md",

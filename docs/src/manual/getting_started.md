@@ -37,8 +37,7 @@ starts in the same Julia session are fast.
 ### From the REPL
 
 In the REPL, `geometry_picker` opens the window and returns right away. The REPL stays usable,
-and the return value (the *session*) gives you access to the picks and settings of the window
-(see [Using the picker from the REPL](@ref)):
+and the return value (the *session*) gives you access to the picks and settings of the window:
 
 ```julia
 session = geometry_picker("profile.pgmg")
