@@ -104,7 +104,7 @@ import GLMakie
         @test q.metadata["profile_info"].end_lonlat == (14.0, 46.0)
     end
 
-    @testset "screenshot" begin
+    GUI_TESTS && @testset "screenshot" begin
         GLMakie.activate!(; visible = false)
         fig = GLMakie.Figure(size = (200, 150))
         GLMakie.heatmap(fig[1, 1], rand(5, 5))
