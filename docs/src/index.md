@@ -3,9 +3,9 @@
 layout: home
 
 hero:
-  name: "AdriaArrayGeometryPicker.jl"
-  text: "Picking geometries on geophysical profiles"
-  tagline: A GLMakie window to view GeophysicalModelGenerator.jl profiles and to pick interfaces such as the Moho or a slab top on them
+  name: AdriaArrayGeometryPicker.jl
+  text: Interpret geoscientific datasets
+  tagline: A GUI to view GeophysicalModelGenerator.jl profiles and to define geometries
   image:
     src: /logo.png
     alt: AdriaArrayGeometryPicker.jl
@@ -21,20 +21,16 @@ hero:
       link: https://github.com/JuliaGeodynamics/AdriaArrayGeometryPicker.jl
 
 features:
-  - icon: 🗺️
-    title: Profiles and slices
+  - title: Profiles and slices
     details: Vertical cross-sections and horizontal slices with volume data, surface data, point data, topography and a map overview.
     link: /manual/window
-  - icon: ✍️
-    title: Picking
+  - title: Picking
     details: Add, move and remove picks with the mouse, with the user name and profile stored with the picks.
     link: /manual/picking
-  - icon: 💾
-    title: Pick and state files
+  - title: Pick and state files
     details: Save picks as JLD2 or CSV, restore the whole state of the window and load files of earlier versions.
     link: /manual/files
-  - icon: 👥
-    title: Comparing picks
+  - title: Comparing picks
     details: Show the picks of other people next to your own and make them editable.
     link: /manual/compare
 ---
