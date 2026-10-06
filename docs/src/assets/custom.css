@@ -1,4 +1,0 @@
-/* screenshots of a single panel: show them at about their size in the window */
-img[src*="panel_"] {
-    max-width: 320px;
-}
