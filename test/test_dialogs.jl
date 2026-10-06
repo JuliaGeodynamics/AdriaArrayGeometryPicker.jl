@@ -51,7 +51,7 @@ end
         end
     end
 
-    @testset "screenshot" begin
+    GUI_TESTS && @testset "screenshot" begin
         fig = GLMakie.Figure(size = (100, 100))
         with_fake_dialogs("", joinpath(dir, "dialogshot.png")) do
             @test fetch(save_screenshot_dialog(fig; px_per_unit = 1)) == joinpath(dir, "dialogshot.png")
