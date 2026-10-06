@@ -146,7 +146,7 @@ This current version is being developed as part of the DFG funded Priority Progr
 
 <p align="center">
     <a href="https://spp-deform.de">
-        <img border="0" alt="SPP DEFORM" src="./assets/DEFORM_logo.png" width="600">
+        <img border="0" alt="SPP DEFORM" src="./assets/DEFORM_logo2.png" width="600">
     </a>
 </p>
 
