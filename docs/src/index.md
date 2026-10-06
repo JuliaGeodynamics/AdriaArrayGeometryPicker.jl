@@ -1,11 +1,9 @@
-```@raw html
----
 layout: home
 
 hero:
-  name: "AdriaArrayGeometryPicker.jl"
-  text: "Picking geometries on geophysical profiles"
-  tagline: A GLMakie window to view GeophysicalModelGenerator.jl profiles and to pick interfaces such as the Moho or a slab top on them
+  name: AdriaArrayGeometryPicker.jl
+  text: Picking geometries on geophysical profiles
+  tagline: A graphical user interface to view GeophysicalModelGenerator.jl profiles and to pick geometries on them.
   image:
     src: /logo.png
     alt: AdriaArrayGeometryPicker.jl
@@ -38,4 +36,3 @@ features:
     details: Show the picks of other people next to your own and make them editable.
     link: /manual/compare
 ---
-```
