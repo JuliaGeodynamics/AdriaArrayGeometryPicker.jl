@@ -1,13 +1,18 @@
-# Build the documentation:
+# Build the documentation with DocumenterVitepress.jl. Run in the docs folder:
 #
-#     julia --project=docs -e "using Pkg; Pkg.instantiate()"    # once
-#     julia --project=docs docs/make.jl
+#     julia --startup-file=no --project=. -e "using Pkg; Pkg.instantiate()"   # once
+#     npm install                                                             # once (needs Node.js)
+#     julia --startup-file=no --project=. make.jl                             # Markdown for VitePress
+#     npm run docs:build                                                      # HTML in docs/build/1
 #
-# The HTML pages are written to docs/build (open docs/build/index.html). The screenshots in
-# docs/src/assets are made by docs/screenshots.jl and committed, so building the documentation
-# needs no OpenGL.
+# View the site with `npm run docs:dev` (live preview, http://localhost:5173) or, after the build,
+# `npm run docs:preview`. Opening the HTML files directly does not work. On Linux / macOS
+# `julia make.jl` runs the npm steps itself. The screenshots in docs/src/assets are made by
+# docs/screenshots.jl and committed, so building the documentation needs no OpenGL. The style of
+# the screenshots is in src/.vitepress/theme/style.css.
 
 using Documenter
+using DocumenterVitepress
 using AdriaArrayGeometryPicker
 
 DocMeta.setdocmeta!(AdriaArrayGeometryPicker, :DocTestSetup,
@@ -18,13 +23,10 @@ makedocs(;
     sitename = "AdriaArrayGeometryPicker.jl",
     authors = "Marcel Thielmann",
     modules = [AdriaArrayGeometryPicker],
-    format = Documenter.HTML(;
-        prettyurls = get(ENV, "CI", "false") == "true",
-        assets = ["assets/custom.css"],
-        edit_link = nothing,
-        repolink = nothing,
-        size_threshold_warn = 200 * 1024,
-        size_threshold = 400 * 1024,
+    format = DocumenterVitepress.MarkdownVitepress(;
+        repo = "https://github.com/JuliaGeodynamics/AdriaArrayGeometryPicker.jl",
+        devbranch = "main",
+        devurl = "dev",
     ),
     pages = [
         "Home" => "index.md",
@@ -46,9 +48,11 @@ makedocs(;
         ],
     ],
     checkdocs = :all,
-    # no source links while the repository has no remote; remove once it has one
-    remotes = nothing,
 )
 
-# Deploy to GitHub Pages once the repository has a remote, e.g.
-# deploydocs(; repo = "github.com/<user>/AdriaArrayGeometryPicker.jl.git", devbranch = "main")
+# Deploy to GitHub Pages (only on CI, e.g. a GitHub Actions workflow that runs this file)
+DocumenterVitepress.deploydocs(;
+    repo = "github.com/JuliaGeodynamics/AdriaArrayGeometryPicker.jl.git",
+    devbranch = "main",
+    push_preview = true,
+)
