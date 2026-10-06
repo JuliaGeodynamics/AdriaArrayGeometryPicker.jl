@@ -206,5 +206,14 @@ grants TH2076/7-1 and KA3367/10-1), which were part of the
 [SPP 2017 4DMB project](http://www.spp-mountainbuilding.de) project and the DFG Emmy Noether
 grant TH 2076/8-1.
 
-This current version is being developed as part of the DFG funded Priority Program DEFORM under
+This current version is being developed as part of the DFG funded Priority Program [DEFORM](https://spp-deform.de) under
 project number TH 2076/10-1.
+
+<p align="center">
+    <a href="https://spp-deform.de">
+        <img border="0" alt="SPP DEFORM" src="./assets/DEFORM_logo.png" width="600">
+    </a>
+</p>
+
+
+
