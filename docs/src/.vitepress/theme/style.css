@@ -354,3 +354,22 @@ mjx-container svg path {
 img[src*="panel_"] {
     max-width: 320px;
 }
+
+/* funding logos at the bottom right of the landing page: the variant for the theme in use */
+.funding-logos {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1152px;
+    margin: 3rem auto 2rem;
+    padding: 0 24px;
+}
+.funding-logos img {
+    height: 80px;
+    width: auto;
+    margin: 0;
+}
+.dark-only { display: none; }
+.dark .light-only { display: none; }
+.dark .dark-only { display: inline; }

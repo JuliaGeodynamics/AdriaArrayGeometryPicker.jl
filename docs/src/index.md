@@ -35,3 +35,16 @@ features:
     link: /manual/compare
 ---
 ```
+
+```@raw html
+<div class="funding-logos">
+  <a href="https://spp-deform.de">
+    <img class="light-only" src="./assets/DEFORM_logo.png" alt="SPP DEFORM">
+    <img class="dark-only" src="./assets/DEFORM_logo2.png" alt="SPP DEFORM">
+  </a>
+  <a href="https://www.dfg.de">
+    <img class="light-only" src="./assets/dfg_logo_schriftzug_blau_foerderung_en.gif" alt="Funded by the DFG">
+    <img class="dark-only" src="./assets/dfg_logo_schriftzug_weiss_foerderung_en.gif" alt="Funded by the DFG">
+  </a>
+</div>
+```
