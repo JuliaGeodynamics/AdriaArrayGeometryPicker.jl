@@ -3,9 +3,25 @@ https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/var
 /* Example */
 /* https://github.com/vuejs/vitepress/blob/main/template/.vitepress/theme/style.css */
 
+
+/* Wide enough for "AdriaArrayGeometryPicker.jl" (~907px at the 56px hero font size) */
 .VPHero .clip {
   white-space: pre;
-  max-width: 600px;
+  max-width: 950px;
+}
+
+/* Show the full package name in the nav bar instead of truncating it */
+@media (min-width: 970px) {
+  .VPNavBarTitle .title {
+    max-width: none !important;
+  }
+
+  .VPNavBarTitle .title span {
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap;
+  }
 }
 
 /* Fonts */
