@@ -22,16 +22,13 @@ hero:
 
 features:
   - title: Profiles and slices
-    details: Vertical cross-sections and horizontal slices with volume data, surface data, point data, topography and a map overview.
+    details: View and compare different datasets from vertical cross-sections and horizontal slices 
     link: /manual/window
   - title: Picking
-    details: Add, move and remove picks with the mouse, with the user name and profile stored with the picks.
+    details: Add, move and remove picks to define subsurface geometries
     link: /manual/picking
-  - title: Pick and state files
-    details: Save picks as JLD2 or CSV, restore the whole state of the window and load files of earlier versions.
-    link: /manual/files
   - title: Comparing picks
-    details: Show the picks of other people next to your own and make them editable.
+    details: Show the picks of other people next to your own
     link: /manual/compare
 ---
 ```
