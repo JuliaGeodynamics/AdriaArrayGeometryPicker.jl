@@ -2,7 +2,6 @@
 
 <p align="center"><img src="./assets/AdA_GeometryPicker_logo_tr.png" alt="AdriaArrayGeometryPicker.jl" width="600"></p>
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://juliageodynamics.github.io/AdriaArrayGeometryPicker.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliageodynamics.github.io/AdriaArrayGeometryPicker.jl/dev/)
 [![Build Status](https://github.com/JuliaGeodynamics/AdriaArrayGeometryPicker.jl/workflows/CI/badge.svg)](https://github.com/JuliaGeodynamics/AdriaArrayGeometryPicker.jl/actions)
 
