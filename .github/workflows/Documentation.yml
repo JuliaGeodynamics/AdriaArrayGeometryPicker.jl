@@ -27,7 +27,7 @@ jobs:
       - uses: julia-actions/setup-julia@v2
         with:
           version: '1.12'
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
 
       # the package loads GLMakie, which needs OpenGL even though the documentation does not
       - name: Install virtual display

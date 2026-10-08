@@ -35,7 +35,7 @@ jobs:
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.version }}
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
 
       # GLMakie needs OpenGL. On Linux, we use a virtual display and the GUI tests are
       # required to run. On Windows we install a software OpenGL driver (Mesa); there and
