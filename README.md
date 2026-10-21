@@ -10,7 +10,7 @@ The AdriaArray Geometry Picker is a graphical user interface (GUI) designed to f
 > [!IMPORTANT]
 > The latest version of this package represents a complete rewrite of the original AdriaArrayGeometryPicker.jl. The new version is not compatible with the old one, and the old version is no longer maintained. The new version has been designed to provide similar functionality. Please check the [manual](https://juliageodynamics.github.io/AdriaArrayGeometryPicker.jl/dev/) for the current status of the package.
 
-The AdA Geometry Picker employs [GLMakie](https://docs.makie.org/stable/explanations/backends/glmakie.html) for graphics rendering. It builds on [GeophysicalModelGenerator.jl](https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl) (GMG) for data handling. To use the AdA Geometry Picker, it is therefore necessary to be familiar with GeophysicalModelGenerator.jl.
+The AdA Geometry Picker employs [GLMakie](https://docs.makie.org/stable/explanations/backends/glmakie.html) for graphics rendering. It builds on [GeophysicalModelGenerator.jl](https://github.com/JuliaGeodynamics/GeophysicalModelGenerator.jl) (GMG) for data handling. To use the AdA Geometry Picker, it is therefore necessary to be familiar with GeophysicalModelGenerator.jl, in particular with the [generation of vertical/horizontal profiles](https://juliageodynamics.github.io/GeophysicalModelGenerator.jl/dev/man/tutorial_AdriaArrayGeometryPicker) through GMG datasets.
 
 ![The picker window](docs/src/assets/window_compare.png)
 
