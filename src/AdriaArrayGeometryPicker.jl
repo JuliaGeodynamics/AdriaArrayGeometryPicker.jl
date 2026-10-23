@@ -43,31 +43,31 @@ using ColorSchemes: ColorSchemes
 using GeophysicalModelGenerator: GeophysicalModelGenerator, ustrip
 
 # generic building blocks
-include("picks.jl")
-include("picks_io.jl")
-include("dialogs.jl")
-include("screenshot.jl")
-include("widget_helpers.jl")
-include("panels.jl")
-include("picking.jl")
+include("picks/picks.jl")
+include("io/picks_io.jl")
+include("io/dialogs.jl")
+include("io/screenshot.jl")
+include("gui/widget_helpers.jl")
+include("gui/panels.jl")
+include("picks/picking.jl")
 
 # GeophysicalModelGenerator profiles
-include("profile_io.jl")
-include("layout.jl")
-include("topography.jl")
-include("topography_panel.jl")
-include("volume.jl")
-include("surface.jl")
-include("points.jl")
-include("map_overview.jl")
-include("profile_events.jl")
-include("profile_picks.jl")
-include("compare_picks.jl")
-include("gui_state.jl")
-include("menu.jl")
+include("io/profile_io.jl")
+include("gui/layout.jl")
+include("plots/topography.jl")
+include("plots/topography_panel.jl")
+include("plots/volume.jl")
+include("plots/surface.jl")
+include("plots/points.jl")
+include("plots/map_overview.jl")
+include("gui/profile_events.jl")
+include("picks/profile_picks.jl")
+include("picks/compare_picks.jl")
+include("io/gui_state.jl")
+include("gui/menu.jl")
 
 # the picker window
-include("geometry_picker.jl")
+include("gui/geometry_picker.jl")
 
 export geometry_picker
 export Picks, points, save_picks, load_picks
