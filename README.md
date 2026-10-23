@@ -26,6 +26,7 @@ The AdA Geometry Picker employs [GLMakie](https://docs.makie.org/stable/explanat
   - [Tests](#tests)
   - [Troubleshooting](#troubleshooting)
   - [Contributing](#contributing)
+  - [Source layout](#source-layout)
   - [Origin](#origin)
   - [Funding](#funding)
 
@@ -141,6 +142,17 @@ If you encounter any issues, don't hesitate to open an issue or to ask a questio
 
 ### Contributing
 You are very welcome to contribute to AdriaArrayGeometryPicker by reporting bugs or by implementing new functionality.
+
+### Source layout
+The code in `src/` is grouped by subject; `src/AdriaArrayGeometryPicker.jl` includes all files.
+
+| Folder | Content |
+|---|---|
+| `src/io/` | everything that reads or writes files: picks (JLD2, CSV), profiles, GUI state, screenshots and file dialogs |
+| `src/picks/` | the `Picks` container, interactive picking, picks on a profile and picks of other files for comparison |
+| `src/plots/` | plots of the volume, surface, point and topography data and the map overview |
+| `src/gui/` | window layout, menu, panels, widget helpers and the picker window (`geometry_picker`) |
+
 
 ### Funding
 Early versions of this GUI have been developed with support from different DFG projects (DFG grants TH2076/7-1 and KA3367/10-1), which were part of the [SPP 2017 4DMB project](http://www.spp-mountainbuilding.de) project and the DFG Emmy Noether grant TH 2076/8-1.
