@@ -119,15 +119,10 @@ function load_topography!(state, path::AbstractString)
     geo = first(geos)
 
     # regular grid: the first column holds lon, the first row holds lat; elevation in the depth field
-    step_x = cld(size(geo.depth.val, 1), 1000)
-    step_y = cld(size(geo.depth.val, 2), 1000)
-    x = Vector{Float64}(geo.lon.val[1:step_x:end, 1, 1])
-    y = Vector{Float64}(geo.lat.val[1, 1:step_y:end, 1])
-    z = Float64.(geo.depth.val[1:step_x:end, 1:step_y:end, 1])
+    x, y, z = topography_grid(geo)
 
     state.heatmap[] === nothing || delete!(state.ax, state.heatmap[])
-    finite = filter(isfinite, z)
-    m = isempty(finite) ? 1.0 : max(maximum(abs, finite), eps())
+    m = symmetric_limit(z)
     state.heatmap[] = heatmap!(state.ax, x, y, z; colormap = :oleron, colorrange = (-m, m))
     translate!(state.heatmap[], 0, 0, -50)
 
@@ -216,8 +211,8 @@ function slice_extent(profile)
     end
     for g in geos
         isempty(g.lon.val) && continue
-        lon, lat = filter(isfinite, g.lon.val), filter(isfinite, g.lat.val)
-        isempty(lon) || isempty(lat) || return extrema(lon), extrema(lat)
+        lon, lat = finite_extrema(g.lon.val), finite_extrema(g.lat.val)
+        lon === nothing || lat === nothing || return lon, lat
     end
     return nothing
 end

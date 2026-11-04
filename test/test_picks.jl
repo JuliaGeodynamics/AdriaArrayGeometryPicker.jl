@@ -26,3 +26,12 @@ using GeometryBasics: Point2, Point2f, Point3f
         @test_throws ArgumentError Picks([(0, 0)]; names = (:x, :x))
     end
 end
+
+@testset "finite range helpers" begin
+    using AdriaArrayGeometryPicker: symmetric_limit, finite_extrema
+    @test symmetric_limit([NaN, -3.0, 2.0, Inf]) == 3.0
+    @test symmetric_limit([NaN, 0.0]) == 1.0
+    @test symmetric_limit(Float64[]) == 1.0
+    @test finite_extrema([NaN, 2.0, -1.0, -Inf]) == (-1.0, 2.0)
+    @test finite_extrema([NaN, NaN]) === nothing
+end

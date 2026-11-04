@@ -62,8 +62,8 @@ end
 # as `(lon, lat, elevation)`
 function topography_grid(geo)
     sx, sy = cld(size(geo.depth.val, 1), 1000), cld(size(geo.depth.val, 2), 1000)
-    return (Vector{Float64}(geo.lon.val[1:sx:end, 1, 1]), Vector{Float64}(geo.lat.val[1, 1:sy:end, 1]),
-            Float64.(geo.depth.val[1:sx:end, 1:sy:end, 1]))
+    return (Float64.(@view geo.lon.val[1:sx:end, 1, 1]), Float64.(@view geo.lat.val[1, 1:sy:end, 1]),
+            Float64.(@view geo.depth.val[1:sx:end, 1:sy:end, 1]))
 end
 
 """
@@ -153,8 +153,7 @@ function load_topography_panel!(state, profile, name)
             lon, lat, z = get!(() -> topography_grid(geo), grids, key)
             kind = something(mode.selection[], "Off")
             if kind == "Heatmap"
-                finite = filter(isfinite, z)
-                m = isempty(finite) ? 1.0 : max(maximum(abs, finite), eps())
+                m = symmetric_limit(z)
                 plot = heatmap!(ax, lon, lat, z; colormap = :oleron, colorrange = (-m, m),
                                 alpha = opacity.value)
                 translate!(plot, 0, 0, -40)   # above the volume heatmap (-50), below contours and lines
@@ -203,7 +202,7 @@ function fit_horizontal_axis!(ax::Axis, profile)
         slice_extent(profile)
     else
         geo = last(first(sets))
-        extrema(geo.lon.val[:, 1, 1]), extrema(geo.lat.val[1, :, 1])
+        extrema(@view geo.lon.val[:, 1, 1]), extrema(@view geo.lat.val[1, :, 1])
     end
     extent === nothing && return
     (xmin, xmax), (ymin, ymax) = extent

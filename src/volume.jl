@@ -301,14 +301,14 @@ end
 # the depth of a surface data set (`geo.depth`).
 function grid_data(geo, field)
     if haskey(geo.fields, :x_profile)
-        x = Vector{Float64}(geo.fields.x_profile[:, 1, 1])
-        y = Vector{Float64}(geo.depth.val[1, :, 1])
+        x = Float64.(@view geo.fields.x_profile[:, 1, 1])
+        y = Float64.(@view geo.depth.val[1, :, 1])
     else
-        x = Vector{Float64}(geo.lon.val[:, 1, 1])
-        y = Vector{Float64}(geo.lat.val[1, :, 1])
+        x = Float64.(@view geo.lon.val[:, 1, 1])
+        y = Float64.(@view geo.lat.val[1, :, 1])
     end
     raw = field === :depth && !haskey(geo.fields, :depth) ? geo.depth.val : geo.fields[field]
-    values = Float64.(ustrip.(raw)[:, :, 1])
+    values = Float64.(ustrip.(@view raw[:, :, 1]))   # fused: one copy of the slice only
     return x, y, values
 end
 
@@ -324,9 +324,7 @@ the one of the heatmap and is titled with the field name.
 function plot_contours!(state, geo, field::Symbol)
     clear_contours!(state)
     x, y, values = grid_data(geo, field)
-    finite = filter(isfinite, values)
-    m = isempty(finite) ? 1.0 : maximum(abs, finite)
-    m == 0 && (m = 1.0)
+    m = symmetric_limit(values)
     state.contour_slider.range[] = LinRange(-m, m, 1000)
     set_close_to!(state.contour_slider, -m, m)
 
@@ -368,9 +366,7 @@ function plot_volume!(state, geo, field::Symbol)
                                colorrange = state.colorrange)
     translate!(state.heatmap[], 0, 0, -50)   # below lines and points, but above the grid (z = -100)
 
-    finite = filter(isfinite, values)
-    m = isempty(finite) ? 1.0 : maximum(abs, finite)
-    m == 0 && (m = 1.0)
+    m = symmetric_limit(values)
     state.slider.range[] = LinRange(-m, m, 1000)
     set_close_to!(state.slider, -m, m)
     state.cbar_title.text[] = string(field)
