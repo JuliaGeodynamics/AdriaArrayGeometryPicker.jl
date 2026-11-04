@@ -111,6 +111,6 @@ end
 # whether the depth of the surface `geo` is above and below `depth` somewhere, i.e. whether the
 # surface intersects the horizontal slice at `depth`
 function crosses_depth(geo, depth)
-    values = filter(isfinite, geo.depth.val)
-    return !isempty(values) && minimum(values) < depth < maximum(values)
+    r = finite_extrema(geo.depth.val)
+    return r !== nothing && r[1] < depth < r[2]
 end

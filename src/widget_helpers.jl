@@ -48,12 +48,25 @@ function parse_levels(text)
     return sort!(unique(Float64[v for v in parsed]))
 end
 
+# largest finite |value| in `x` (symmetric colour range), 1.0 if there is none or it is 0;
+# no copy of `x`, which can be a large grid
+function symmetric_limit(x)
+    m = maximum(v -> isfinite(v) ? abs(Float64(v)) : 0.0, x; init = 0.0)
+    return m == 0 ? 1.0 : m
+end
+
+# (min, max) of the finite values in `x` without copying it; `nothing` if there are none
+function finite_extrema(x)
+    lo, hi = extrema(Iterators.filter(isfinite, x); init = (Inf, -Inf))
+    return lo > hi ? nothing : (lo, hi)
+end
+
 """
     label_of(option) -> String
 
 The text a dropdown shows for one of its options (a string, or a `(label, value)` tuple).
 """
-label_of(option) = option isa Tuple ? string(first(option)) : string(option)
+label_of(option) =option isa Tuple ? string(first(option)) : string(option)
 
 # label of the selected entry of `menu`, `nothing` if nothing is selected
 selected_label(menu) = (i = menu.i_selected[]; i < 1 ? nothing : label_of(menu.options[][i]))
